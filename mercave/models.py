@@ -265,8 +265,6 @@ class Final(models.Model):
 
 class Circulacion(models.Model):
     eje = models.ForeignKey(Eje, on_delete=models.CASCADE)
-    loc_inicio = models.CharField(max_length=30, null= True, blank = True)
-    loc_final = models.CharField(max_length=30, null= True, blank = True)
     pinicio = models.ForeignKey(Inicio, on_delete=models.RESTRICT, null= True, blank = True)
     pfinal = models.ForeignKey(Final, on_delete=models.RESTRICT, null= True, blank = True)
     dia = models.DateField()
