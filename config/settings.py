@@ -42,7 +42,8 @@ INSTALLED_APPS = [
     'whitenoise.runserver_nostatic',
     'django.contrib.staticfiles',
     # Terceros
-   
+    'allauth',
+    'allauth.account',
     # Mercave
     'accounts',
     'mercave',
@@ -147,7 +148,14 @@ MEDIA_ROOT = str(BASE_DIR.joinpath('media'))
 # Default primary key field type
 # https://docs.djangoproject.com/en/4.0/ref/settings/#default-auto-field
 
+LOGIN_REDIRECT_URL = ''
+LOGOUT_REDIRECT_URL = ''
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 AUTH_USER_MODEL = 'accounts.Usuario'
-LOGIN_REDIRECT_URL = 'home'
-LOOUT_REDIRECT_URL = 'home'
+SITE_ID = 1
+AUTHENTICATION_BACKENDS = (
+            'django.contrib.auth.backends.ModelBackend',
+            'allauth.account.auth_backends.AuthenticationBackend',
+            )
+EMAIL_BACKEND = 'django.core.mail.backends.console.EmailBackend'
+ACCOUNT_SESSION_REMEMBER = True

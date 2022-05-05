@@ -235,10 +235,38 @@ class Cambio(models.Model):
     def get_absolute_url(self):
         return reverse("ficha_cambio", kwargs={'pk':self.pk})
 
+class Linea(models.Model):
+    codigo = models.CharField(max_length=16, unique= True)
+    nombre = models.CharField(max_length=100, null= True, blank = True)
+    def __str__(self):
+        return (str(self.codigo) + '-' + str(self.nombre))
+    def get_absolute_url(self):
+        return reverse("ficha_linea", kwargs={'pk':self.pk})
+
+class PuntoRed(models.Model):
+    codigo = models.CharField(max_length=16, unique= True)
+    descripcion = models.CharField(max_length=100, null= True, blank = True)
+    linea = models.ForeignKey(Linea, on_delete=models.RESTRICT)
+    pkilometrico = models.FloatField(null= True, blank = True)
+    lng = models.FloatField(default=-3.9820)
+    lat = models.FloatField(default=40.2951)
+    def __str__(self):
+        return (self.codigo)
+
+class Inicio(models.Model):
+    codigo = models.ForeignKey(PuntoRed, on_delete=models.CASCADE)
+    def __str__(self):
+        return (self.codigo)
+
+class Final(models.Model):
+    codigo = models.ForeignKey(PuntoRed, on_delete=models.CASCADE)
+    def __str__(self):
+        return (self.codigo)
+
 class Circulacion(models.Model):
     eje = models.ForeignKey(Eje, on_delete=models.CASCADE)
-    loc_inicio = models.CharField(max_length=30)
-    loc_final = models.CharField(max_length=30)
+    loc_inicio = models.ForeignKey(Inicio, on_delete=models.RESTRICT)
+    loc_final = models.ForeignKey(Final, on_delete=models.RESTRICT)
     dia = models.DateField()
     Vmed = models.FloatField(default = 2.77)
     km = models.FloatField(default = 340)
@@ -309,4 +337,3 @@ class AlarmaCirculacion(models.Model):
         return (self.mensaje)
     def get_absolute_url(self):
         return reverse("alarma_circulacion", kwargs={'pk':self.pk})
-    

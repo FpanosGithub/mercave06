@@ -4,9 +4,6 @@ from .models import Fabricante, Mantenedor, Keeper, Operador, Eje, Cambiador, Ca
 from .gis import PloteaAlarmaCirc, mapa_ejes, mapa_cambiadores, mapa_eje, mapa_cambios, PloteaAlarmaCirc
 
 # Create your views here.
-def HomePage(request):
-        return render(request,'home.html')
-
 @login_required
 def VistaEjes(request):
     fabricantes = Fabricante.objects.filter(de_ejes = True)

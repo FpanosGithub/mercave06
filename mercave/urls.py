@@ -1,5 +1,5 @@
 from django.urls import path
-from .views import HomePage, VistaEjes, VistaCambiadores, VistaEje, VistaCambiador
+from .views import VistaEjes, VistaCambiadores, VistaEje, VistaCambiador
 
 urlpatterns = [
     path("", VistaEjes, name ='ejes_expl'),

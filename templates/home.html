@@ -21,11 +21,11 @@
         <div class="col-lg-4 offset-lg-0"></div>
         <div class="col-lg-4 offset-lg-0">
             <h1> Página de entrada </h1>
-            <h2> No tienes sessión activa.</h2>
-            <a href = "{% url 'login' %}">
-                <h3>Entrar. Usuario registrado</h3>
+            <h3> No tienes sessión activa.</h3>
+            <a href = "{% url 'account_login' %}">
+                <h5>Entrar. Usuario registrado</h5>
             </a>
-            <a href = "#">
+            <a href = "{% url 'account_signup' %}">
                 <h5>Registrar Nuevo Ususario<h5>
             </a>
         </div>
