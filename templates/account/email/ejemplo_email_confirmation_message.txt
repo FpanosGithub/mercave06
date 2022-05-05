@@ -1,0 +1,12 @@
+{% load account %}{% load i18n %}{% autoescape off %}
+{% blocktrans with site_name=current_site.name site_domain=current_site.domain %}
+Hola desde {{ site_name }}!
+
+Estas recibiendo este email porque el usuario x
+ha dado este email como correo de confirmación de su cuenta.
+
+Para confirmar que es correcto, ir a {{ activate_url }}.
+{% endblocktrans %}{% endautoescape %}
+{% blocktrans with site_name=current_site.name site_domain=current_site.domain %}
+Gracias desde {{ site_name }}!
+{{ site_domain }}{% endblocktrans %}
