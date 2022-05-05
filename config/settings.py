@@ -29,7 +29,7 @@ SECRET_KEY = env("SECRET_KEY")
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = env.bool("DEBUG", default= False)
 
-ALLOWED_HOSTS = ['.herokuapp.com','127.0.0.1', 'localhost']
+ALLOWED_HOSTS = ['.herokuapp.com','127.0.0.1', 'localhost', '*']
 
 # Application definition
 
@@ -94,7 +94,7 @@ WSGI_APPLICATION = 'config.wsgi.application'
 #    }
 #}
 DATABASES = {
-            'default': env.dj_db_url("DATABASE_URL", default ="postgres://postgres@db/postgres")
+            'default': env.dj_db_url("DATABASE_URL")
             }
 
 
