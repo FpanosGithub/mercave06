@@ -254,14 +254,14 @@ class PuntoRed(models.Model):
         return (self.codigo)
 
 class Inicio(models.Model):
-    codigo = models.ForeignKey(PuntoRed, on_delete=models.CASCADE)
+    puntored = models.ForeignKey(PuntoRed, on_delete=models.CASCADE)
     def __str__(self):
-        return (self.codigo)
+        return self.puntored.codigo
 
 class Final(models.Model):
-    codigo = models.ForeignKey(PuntoRed, on_delete=models.CASCADE)
+    puntored = models.ForeignKey(PuntoRed, on_delete=models.CASCADE)
     def __str__(self):
-        return (self.codigo)
+        return self.puntored.codigo
 
 class Circulacion(models.Model):
     eje = models.ForeignKey(Eje, on_delete=models.CASCADE)

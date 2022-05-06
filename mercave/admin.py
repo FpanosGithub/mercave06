@@ -2,7 +2,7 @@ from django.contrib import admin
 
 from .models import Organizacion, Diseñador, Fabricante, Mantenedor, Keeper, Operador, Aprovador, Certificador
 from .models import Composicion, Vagon, VersionEje, Eje, VersionCambiador, Cambiador
-from .models import Cambio, Circulacion, AlarmaCambio, AlarmaCirculacion
+from .models import Cambio, Circulacion, AlarmaCambio, AlarmaCirculacion, Linea, PuntoRed, Inicio,Final
 
 # Register your models here.
 admin.site.register(Organizacion)
@@ -23,3 +23,7 @@ admin.site.register(Cambio)
 admin.site.register(Circulacion)
 admin.site.register(AlarmaCambio)
 admin.site.register(AlarmaCirculacion)
+admin.site.register(Linea)
+admin.site.register(PuntoRed)
+admin.site.register(Inicio)
+admin.site.register(Final)

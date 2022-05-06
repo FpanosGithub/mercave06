@@ -1,72 +1,73 @@
 {% extends '_base_explotacion.html' %}
-{% block filtro %}
-    <h5>Ejes</h5><br><br>
-    <h5>Filtro:</h5>
-    Fabricantes: <br>
-    <table>
-        {% for fabricante in fabricantes %}
-        <tr> 
-            <td><input type = "checkbox">{{ fabricante.organizacion.codigo }}</td>
-        </tr>
-        {% endfor %}
+{% block cuerpo %}
+<div class="container-fluid d-lg-flex d-xxl-flex flex-row align-items-lg-start justify-content-xxl-start align-items-xxl-start">
+<div class="col-lg-3 offset-lg-0">
+    <h5>Ejes</h5>
+    <h6>Filtro:</h6>
+    <table class="table">
+        <thead class="table-light">
+            <th>Fabricantes: </th>
+        </thead>
+        <tbody >
+            {% for fabricante in fabricantes %}
+            <tr><td><input type = "checkbox">{{ fabricante.organizacion.codigo }}</td></tr>
+            {% endfor %}
+        </tbody>
     </table>
-    Mantenedores:<br>
-    <table>
-        {% for mantenedor in mantenedores %}
-            <tr> 
-                <td><input type = "checkbox">{{ mantenedor.organizacion.codigo }}</a></td>
-            </tr>
-        {% endfor %}
+    <table class="table">
+        <thead class="table-light">
+            <th>Mantenedores: </th>
+        </thead>
+        <tbody >
+            {% for mantenedor in mantenedores %}
+            <tr><td><input type = "checkbox">{{ mantenedor.organizacion.codigo }}</td></tr>
+            {% endfor %}
+            </tbody>
     </table>
-    Keepers:<br>
-    <table>
-        {% for keeper in keepers %}
-            <tr> 
-                <td><input type = "checkbox"">{{ keeper.organizacion.codigo }}</a></td>
-            </tr>
-        {% endfor %}
+    <table class="table">
+        <thead class="table-light"> 
+            <th>Keepers: </th>
+        </thead>
+        <tbody >
+            {% for keeper in keepers %}
+            <tr><td><input type = "checkbox">{{ keeper.organizacion.codigo }}</td></tr>
+            {% endfor %}
+            </tbody>
     </table>
-{% endblock filtro %}
-{% block mapa %}
+    <br><a href="#" ><button class="btn btn-primary" type="button" style="margin-left: 10px;">&nbsp&nbspAplicar Filtro&nbsp&nbsp</button></a>
+</div>
+<div class="col-lg-9">
     {% autoescape off %}
     {{ mapa }}
     {% endautoescape %}
-{% endblock mapa %}
-
-{% block hueco %}
-    ejes<br>_explotacion. html
-{% endblock hueco %}
-
-{% block elementos %}
-<table>
-    <thead>
-        <th>Código</th>
-        <th>Versión</th>
-        <th>Fabricante</th>
-        <th>Keeper</th>
-        <th>Mantenedor</th>
-        <th>Cambios</th>
-        <th>km</th>
-        <th>Alarm 1</th>
-        <th>Alarm 2</th>
-    </thead>
-    <tbody>
-        {% for eje in ejes %}
-        <tr> 
-            <td><a href = "{{ eje.get_absolute_url }}"> {{ eje.get_absolute_url }} </a></td>
-            <td>{{ eje.codigo }}</td></a>
-            <td>{{ eje.version }}</td>
-            <td>{{ eje.fabricante.organizacion.codigo }}</td>
-            <td>{{ eje.keeper.organizacion.codigo }}</td>
-            <td>{{ eje.mantenedor.organizacion.codigo }}</td>
-            <td>{{ eje.num_cambios }}</td>
-            <td>{{ eje.km }}</td>
-            <td>{{ eje.alarmas_cambio }}</td>
-            <td>{{ eje.alarmas_circulacion }}</td>
-        </tr>
-    {% endfor %}
-
-    </tbody>
-</table>
-
-{% endblock elementos %}
+</div>
+</div>
+<div class="container-fluid d-lg-flex d-xxl-flex flex-row align-items-lg-start justify-content-xxl-start align-items-xxl-start">
+<div class="col-lg-2 offset-lg-0">
+    <h6>lista de Ejes:</h6>
+</div>
+<div class="col-lg-10">
+    <table class="table">
+        <thead>
+            <th>Código</th><th>Versión</th><th>Fabricante</th><th>Keeper</th><th>Mantenedor</th><th>Cambios</th><th>km</th><th>Alarmas Circul.</th><th>Alarmas Camb.</th>
+        </thead>
+        <tbody>
+            {% for eje in ejes %}
+            <tr> 
+                <td><a href = "{{ eje.get_absolute_url }}"> {{ eje.get_absolute_url }} </a></td>
+                <td>{{ eje.codigo }}</td></a>
+                <td>{{ eje.version }}</td>
+                <td>{{ eje.fabricante.organizacion.codigo }}</td>
+                <td>{{ eje.keeper.organizacion.codigo }}</td>
+                <td>{{ eje.mantenedor.organizacion.codigo }}</td>
+                <td>{{ eje.num_cambios }}</td>
+                <td>{{ eje.km }}</td>
+                <td>{{ eje.alarmas_cambio }}</td>
+                <td>{{ eje.alarmas_circulacion }}</td>
+            </tr>
+        {% endfor %}
+        </tbody>
+    </table>
+</div>
+</div>
+{% endblock cuerpo %}

@@ -1,4 +1,4 @@
-{% extends '_base.html' %}
+{% extends '_base_accounts.html' %}
 {% block title %}Cerrar Sesion{% endblock title %}
 {% block content %}
     <h1> Cerrar Sesión </h1>
@@ -6,6 +6,7 @@
     <form method = "post" action="{% url 'account_logout' %}">
         {% csrf_token %}
         {{ form.as_p }}
+        <br>
         <button class="btn btn-danger" type="submit">Log Out</button>
     </form>
 {% endblock content %}
