@@ -42,6 +42,23 @@ def mapa_cambiadores(cambiadores):
 
     return mapa._repr_html_()
 
+def mapa_cambiador(cambiador):
+    mapa = folium.Map((39.8000, -2.9019), zoom_start=6)
+    mc = MarkerCluster()
+     
+    location = [cambiador.lat, cambiador.lng]
+    html =  '<h6><b>CAMBIADOR DE ANCHO : </b>' + str(cambiador.nombre)+ '<h6>' +\
+            '<br><b> Versión: </b>' + str(cambiador.version) +\
+            '<br><b> Fabricante: </b>' + str(cambiador.fabricante) +\
+            '<br><b> Puesta en servicio: </b>' + str(cambiador.fecha_fab) +\
+            '<br><b> Número de operaciones: </b>' + str(cambiador.num_cambios)       
+    popup = folium.Popup(html = html, max_width=200)
+    marker = folium.Marker(location = location, popup = popup, icon = folium.Icon(color="darkgreen", icon = 'plus'))
+    mc.add_child(marker)
+    mapa.add_child(mc)    
+
+    return mapa._repr_html_()
+
 def mapa_eje(eje, circulaciones):
     mapa_int = folium.Map((eje.lat, eje.lng), zoom_start=6)
     # Pop up eje
@@ -113,14 +130,35 @@ def plotear_alarma_circulacion():
 def plotear_cambios(cambios):
     fdM =[] 
     ddM =[]
+    fcM =[] 
+    dcM =[]
+    fem =[] 
+    dem =[]
     for cambio in cambios:
         fdM.append(cambio.fdaM)
         fdM.append(cambio.fdbM)
         ddM.append(cambio.ddaM)
         ddM.append(cambio.ddbM)
+        fcM.append(cambio.fcaM)
+        fcM.append(cambio.fcbM)
+        dcM.append(cambio.dcaM)
+        dcM.append(cambio.dcbM)
+        fem.append(cambio.feam)
+        fem.append(cambio.febm)
+        dem.append(cambio.deam)
+        dem.append(cambio.debm)
 
     p1 = figure(title="Fuerza Descerrojamiento", x_axis_label='mm de desplazamiento de disco',)
     p1.circle(ddM, fdM, legend_label="fd Kn", color="red", size=12)
     p1.toolbar_location = None
     
-    return file_html(p1, CDN, "Cambios")
+    p2 = figure(title="Fuerza Cambio Rueda", x_axis_label='mm de desplazamiento de rueda',)
+    p2.circle(dcM, fcM, legend_label="fc Kn", color="green", size=12)
+    p2.toolbar_location = None
+    
+    p3 = figure(title="Fuerza Encerrojamiento", x_axis_label='mm de desplazamiento de disco',)
+    p3.circle(dem, fem, legend_label="fd Kn", color="blue", size=12)
+    p3.toolbar_location = None
+    
+    # r = row([p1, p2, p3], sizing_mode="stretch_width")
+    return file_html(p1, CDN, "Cambios"), file_html(p2, CDN, "Cambios"), file_html(p3, CDN, "Cambios")

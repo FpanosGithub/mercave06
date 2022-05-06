@@ -1,19 +1,16 @@
 {% extends '_base_explotacion.html' %}
 {% block cuerpo %}
 <div class="container-fluid d-lg-flex d-xxl-flex flex-row align-items-lg-start justify-content-xxl-start align-items-xxl-start">
-    <div class="col-lg-6 offset-lg-0">
-        <h6>Cambiador:</h6>
-        <b>Código</b>: {{ cambiador.codigo }} , <b>Versión</b>: {{ cambiador.version }} , <b>Num Cambios</b>: {{ cambiador.num_cambios }} <br>
-        <b>Fabricante</b>: {{ cambiador.fabricante.organizacion.codigo }}, <b>Fecha fabricación</b>: {{ cambiador.fecha_fab }}, <b>Mantenedor</b>: {{ cambiador.mantenedor.organizacion.codigo }} <br>&nbsp<br>
-    </div>
-    <div class="col-lg-2 ">
-        &nbsp<br>
-        <a href="#" ><button class="btn btn-danger" type="button">Gestionar Alarmas</button></a>
+    <div class="col-lg-12 offset-lg-0">
+        <table class="table table-dark table-borderless">
+            <thead><th>Cambiador:</th><th>Código</th><th>Nombre</th><th>Versión</th><th>Num Cambios</th><th>Fabricante</th><th>Fecha Fabricación</th><th>Mantenedor</th></thead>
+            <tbody><td></td><td>{{ cambiador.codigo }}</td><td>{{ cambiador.nombre }}</td><<td>{{ cambiador.version }}</td><td>{{ cambiador.num_cambios }}</td><td>{{ cambiador.fabricante.organizacion }}</td><td>{{ cambiador.fecha_fab }}</td><td>{{ cambiador.mantenedor.organizacion }}</td></tbody>
+        </table>
     </div>
 </div>
     <div class="container-fluid d-lg-flex d-xxl-flex flex-row align-items-lg-start justify-content-xxl-start align-items-xxl-start">
         <div class="col-lg-6 offset-lg-0">
-            <h6>Cambios:</h6>
+            <h6>Cambios realizados en el cambiador: {{ cambiador.nombre }}</h6>
             <table class="table">
                 <thead class="table-light">
                     <th>Fecha</th><th>Sentido</th><th>Nºcambio</th><th>Vel</th><th>Peso</th><th>Alarma</th>
@@ -31,23 +28,34 @@
                 {% endfor %}
                 </tbody>
             </table>
+            <a href="#" ><button class="btn btn-danger" type="button">Ver Alarmas</button></a>
+            <br>&nbsp
         </div>
         <div class="col-lg-6">
-            <div class="row"><h6>Posiciones del eje en los últimos 4 días:</h6></div>
+            <div class="row"><h6>Situacion del cambiador: {{ cambiador.nombre }}</h6></div>
             <div class="row">
                 {% autoescape off %}
-                {{ graficos_cambios }}
+                {{ mapa }}
                 {% endautoescape %}
             </div>
         </div>
     </div>
     <div class="container-fluid d-lg-flex d-xxl-flex flex-row align-items-lg-start justify-content-xxl-start align-items-xxl-start">
-        <div class="col-lg-6 offset-lg-0">
-        </div>
-        <div class="col-lg-6">
-            <div class="row"><h6>Cambios realizados por el eje {{ eje.codigo }}:</h6></div>
-            <div class="row"></div>
-        </div>
+            <div class="col-lg-4 offset-lg-0">
+            {% autoescape off %}
+            {{ grd }}
+            {% endautoescape %}
+            </div>
+            <div class="col-lg-4 offset-lg-0">
+            {% autoescape off %}
+            {{ grc }}
+            {% endautoescape %}
+            </div>
+            <div class="col-lg-4 offset-lg-0">
+            {% autoescape off %}
+            {{ gre }}
+            {% endautoescape %}
+            </div>
     </div>
     <div class="container-fluid d-lg-flex d-xxl-flex flex-row align-items-lg-start justify-content-xxl-start align-items-xxl-start">
         <div class="col-lg-6 offset-lg-0"></div>

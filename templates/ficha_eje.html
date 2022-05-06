@@ -1,19 +1,16 @@
 {% extends '_base_explotacion.html' %}
 {% block cuerpo %}
 <div class="container-fluid d-lg-flex d-xxl-flex flex-row align-items-lg-start justify-content-xxl-start align-items-xxl-start">
-    <div class="col-lg-6 offset-lg-0">
-        <h6>Eje:</h6>
-        <b>Código</b>: {{ eje.codigo }} , <b>Versión</b>: {{ eje.version }} , <b>Num Cambios</b>: {{ eje.num_cambios }} , <b>Km rodados</b>: {{ eje.km }}<br>
-        <b>Fabricante</b>: {{ eje.fabricante.organizacion.codigo }} , <b>Keeper</b>: {{ eje.keeper.organizacion.codigo }} , <b>Mantenedor</b>: {{ eje.mantenedor.organizacion.codigo }} , <b>Coeficiente de Trabajo</b>: {{ eje.coef_trabajo }}<br>&nbsp<br>
-    </div>
-    <div class="col-lg-2 ">
-        &nbsp<br>
-        <a href="#" ><button class="btn btn-danger" type="button">Gestionar Alarmas</button></a>
+    <div class="col-lg-12 offset-lg-0">
+        <table class="table table-dark table-borderless">
+            <thead><th>Eje:</th><th>Código</th><th>Versión</th><th>Num Cambios</th><th>Km rodados</th><th>Fabricante</th><th>Keeper</th><th>Mantenedor</th><th>Coef. Trabajo</th></thead>
+            <tbody><td></td><td>{{ eje.codigo }}</td><td>{{ eje.version }}</td><td>{{ eje.num_cambios }}</td><td>{{ eje.km }}</td><td>{{ eje.fabricante.organizacion }}</td><td>{{ eje.keeper.organizacion }}</td><td>{{ eje.mantenedor.organizacion }}</td><td>{{ eje.coef_trabajo }}</td></tbody>
+        </table>
     </div>
 </div>
     <div class="container-fluid d-lg-flex d-xxl-flex flex-row align-items-lg-start justify-content-xxl-start align-items-xxl-start">
         <div class="col-lg-6 offset-lg-0">
-            <h6>Circulaciones:</h6>
+            <h5>Circulaciones:</h5>
             <table class="table">
                 <thead class="table-light">
                     <th>Fecha</th><th>Inicio</th><th>Fin</th><th>(Km/h)</th><th>km</th><th>Alarma</th>
@@ -29,7 +26,8 @@
                     </tr>
                 {% endfor %}
             </table>
-            
+            <a href="#" ><button class="btn btn-danger" type="button">Ver Alarmas</button></a>
+            <br>&nbsp
         </div>
         <div class="col-lg-6">
             <div class="row"><h6>Posiciones del eje {{ eje.codigo }} en los últimos 4 días:</h6></div>
@@ -42,7 +40,7 @@
     </div>
     <div class="container-fluid d-lg-flex d-xxl-flex flex-row align-items-lg-start justify-content-xxl-start align-items-xxl-start">
         <div class="col-lg-6 offset-lg-0">
-            <h6>Cambios:</h6>
+            <h5>Cambios:</h5>
             <table class="table">
                 <thead class="table-light">
                     <th>Fecha</th><th>Cambiador</th><th>Sentido</th><th>Nºcambio</th><th>Vel</th><th>Peso</th><th>Alarma</th>
@@ -61,6 +59,8 @@
                 {% endfor %}
                 </tbody>
             </table>
+            <a href="#" ><button class="btn btn-danger" type="button">Ver Alarmas</button></a>
+            <br>&nbsp
         </div>
         <div class="col-lg-6">
             <div class="row"><h6>Cambios realizados por el eje {{ eje.codigo }}:</h6></div>
@@ -72,43 +72,23 @@
         </div>
     </div>
     <div class="container-fluid d-lg-flex d-xxl-flex flex-row align-items-lg-start justify-content-xxl-start align-items-xxl-start">
-        <div class="col-lg-6 offset-lg-0">
-            <h6><b>Alarmas en circulación:</b></h6>
-            <table class="table">
-                <thead class="table-light">
-                    <th>Fecha-hora</th><th>Mensaje</th><th>long</th><th>lat</th>
-                </thead>
-                <tbody>
-                    {% for alarma in alarmas_circulacion %}
-                    <tr>
-                        <td>{{ alarma.fecha_hora }}</td>
-                        <td>{{ alarma.mensaje }}</td>
-                        <td>{{ alarma.lng }}</td>
-                        <td>{{ alarma.lat }}</td>
-                    </tr>
-                    {% endfor %}
-                </tbody>
-            </table>
-            <h6><b>Alarmas en cambios:</b></h6>
-            <table class="table">
-                <thead class="table-light">
-                    <th>Cambiador</th><th>Fecha-hora</th><th>Mensaje</th>
-                </thead>
-                <tbody>
-                    {% for alarma in alarmas_cambios %}
-                    <tr>
-                        <td>{{ alarma.cambio.cambiador }}</td>
-                        <td>{{ alarma.cambio.inicio }}</td>
-                        <td>{{ alarma.mensaje }}</td>
-                    </tr>
-                    {% endfor %}
-                </tbody>
-            </table>
-        </div>
-        <div class="col-lg-6">
+        <h5>Gráficos de esfuerzos en los cambios del eje: {{ eje.codigo }}</h5>
+    </div>
+    <div class="container-fluid d-lg-flex d-xxl-flex flex-row align-items-lg-start justify-content-xxl-start align-items-xxl-start">
+        <div class="col-lg-4 offset-lg-0">
             {% autoescape off %}
-                {{ grafico_alarma }}
-            {% endautoescape %} 
+            {{ grd }}
+            {% endautoescape %}
+        </div>
+        <div class="col-lg-4 offset-lg-0">
+            {% autoescape off %}
+            {{ grc }}
+            {% endautoescape %}
+        </div>
+        <div class="col-lg-3 offset-lg-0">
+            {% autoescape off %}
+            {{ gre }}
+            {% endautoescape %}
         </div>
     </div>
 {% endblock cuerpo %}
