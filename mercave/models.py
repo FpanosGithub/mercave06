@@ -291,6 +291,8 @@ class AlarmaCirculacion(models.Model):
     circulacion = models.ForeignKey(Circulacion, on_delete=models.CASCADE)
     fecha_hora = models.DateTimeField()
     mensaje = models.CharField(max_length=30)
+    lng = models.FloatField(default=-3.9820, null= True, blank = True)
+    lat = models.FloatField(default=40.2951, null= True, blank = True)
     vista = models.BooleanField(default=False)
     ax0 = models.FloatField(default = 2.77)
     ay0 = models.FloatField(default = 2.77)

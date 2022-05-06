@@ -34,7 +34,7 @@
             {% endfor %}
             </tbody>
     </table>
-    <br><a href="#" ><button class="btn btn-primary" type="button" style="margin-left: 10px;">&nbsp&nbspAplicar Filtro&nbsp&nbsp</button></a>
+    <a href="#" ><button class="btn btn-primary" type="button" style="margin-left: 10px;">&nbsp&nbspAplicar Filtro&nbsp&nbsp</button></a><br>&nbsp
 </div>
 <div class="col-lg-9">
     {% autoescape off %}
@@ -44,7 +44,7 @@
 </div>
 <div class="container-fluid d-lg-flex d-xxl-flex flex-row align-items-lg-start justify-content-xxl-start align-items-xxl-start">
 <div class="col-lg-2 offset-lg-0">
-    <h6>lista de Ejes:</h6>
+    <h5>&nbspLista de Ejes:</h5>
 </div>
 <div class="col-lg-10">
     <table class="table">
@@ -54,8 +54,7 @@
         <tbody>
             {% for eje in ejes %}
             <tr> 
-                <td><a href = "{{ eje.get_absolute_url }}"> {{ eje.get_absolute_url }} </a></td>
-                <td>{{ eje.codigo }}</td></a>
+                <td><a href = "{{ eje.get_absolute_url }}"> {{ eje.codigo }} </td></a>
                 <td>{{ eje.version }}</td>
                 <td>{{ eje.fabricante.organizacion.codigo }}</td>
                 <td>{{ eje.keeper.organizacion.codigo }}</td>

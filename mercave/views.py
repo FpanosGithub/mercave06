@@ -1,7 +1,7 @@
 from django.contrib.auth.decorators import login_required
 from django.shortcuts import render
 from .models import Fabricante, Mantenedor, Keeper, Operador, Eje, Cambiador, Cambio, Circulacion, AlarmaCambio, AlarmaCirculacion
-from .gis import PloteaAlarmaCirc, mapa_ejes, mapa_cambiadores, mapa_eje, mapa_cambios, PloteaAlarmaCirc
+from .gis import mapa_ejes, mapa_cambiadores, mapa_eje, mapa_cambios, plotear_alarma_circulacion, plotear_cambios
 
 # Create your views here.
 #@login_required
@@ -28,19 +28,28 @@ def VistaCambiadores(request):
 def VistaEje(request, pk):
     eje_ficha = Eje.objects.get(pk=pk)
     cambios = Cambio.objects.filter(eje=eje_ficha)
-    circulaciones = Circulacion.objects.filter(eje=eje_ficha)
-    #cambios_pks = [cambio.pk for cambio in cambios]
-    #circulaciones_pks = [circulacion.pk for circulacion in circulaciones]
-    #alarmas_cambios = AlarmaCambio.objects.filter(cambio in cambios)
+    circulaciones = Circulacion.objects.filter(eje=eje_ficha)[:5]
+    alarmas_circulacion = AlarmaCirculacion.objects.filter(circulacion__eje__pk=eje_ficha.pk)
+    alarmas_cambios = AlarmaCambio.objects.filter(cambio__eje__pk=eje_ficha.pk)
     mapa_situacion_eje = mapa_eje(eje_ficha, circulaciones)
     mapa_cambios_eje = mapa_cambios(cambios)
-    grafico_alarma = PloteaAlarmaCirc()
+    grafico_alarma = plotear_alarma_circulacion()
 
-    return render(request, 'ficha_eje.html', context={'eje':eje_ficha,'mapa_eje':mapa_situacion_eje, 'cambios':cambios, 'circulaciones':circulaciones, 'mapa_cambios':mapa_cambios_eje, 'grafico_alarma':grafico_alarma,})
+    return render(request, 'ficha_eje.html', context=
+                    {'eje':eje_ficha,
+                    'mapa_eje':mapa_situacion_eje, 
+                    'cambios':cambios, 
+                    'circulaciones':circulaciones, 
+                    'mapa_cambios':mapa_cambios_eje, 
+                    'alarmas_circulacion': alarmas_circulacion, 
+                    'alarmas_cambios': alarmas_cambios,
+                    'grafico_alarma':grafico_alarma,
+                    })
 
 #@login_required
 def VistaCambiador(request, pk):
     cambiador_ficha = Cambiador.objects.get(pk=pk)
     cambios = Cambio.objects.filter(cambiador=cambiador_ficha)
+    graficos_cambios = plotear_cambios(cambios)
 
-    return render(request, 'ficha_cambiador.html', context={'cambiador':cambiador_ficha,})
+    return render(request, 'ficha_cambiador.html', context={'cambiador':cambiador_ficha, 'cambios': cambios, 'graficos_cambios':graficos_cambios})

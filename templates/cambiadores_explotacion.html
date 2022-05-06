@@ -1,64 +1,59 @@
 {% extends '_base_explotacion.html' %}
-{% block filtro %}
-    <form>
-        <h5>Cambiadores</h5><br><br>
-        <h5>Filtro:</h5>
-        Fabricantes: <br>
-        <table>
-        {% for fabricante in fabricantes %}
-            <tr> 
-                <td><input type = "checkbox">{{ fabricante.organizacion.codigo }}</td>
-            </tr>
-        {% endfor %}
-        </table>
-        Mantenedores:<br>
-    <table>
-        {% for mantenedor in mantenedores %}
-            <tr> 
-                <td><input type = "checkbox">{{ mantenedor.organizacion.codigo }}</a></td>
-            </tr>
-        {% endfor %}
+{% block cuerpo %}
+<div class="container-fluid d-lg-flex d-xxl-flex flex-row align-items-lg-start justify-content-xxl-start align-items-xxl-start">
+<div class="col-lg-3 offset-lg-0">
+    <h5>Cambiadores</h5>
+    <h6>Filtro:</h6>
+    <table class="table">
+        <thead class="table-light">
+            <th>Fabricantes: </th>
+        </thead>
+        <tbody >
+            {% for fabricante in fabricantes %}
+            <tr><td><input type = "checkbox">{{ fabricante.organizacion }}</td></tr>
+            {% endfor %}
+        </tbody>
     </table>
-    </form>
-{% endblock filtro %}
-    
-{% block mapa %}
+    <table class="table">
+        <thead class="table-light">
+            <th>Mantenedores: </th>
+        </thead>
+        <tbody >
+            {% for mantenedor in mantenedores %}
+            <tr><td><input type = "checkbox">{{ mantenedor.organizacion }}</td></tr>
+            {% endfor %}
+            </tbody>
+    </table>
+    <a href="#" ><button class="btn btn-primary" type="button" style="margin-left: 10px;">&nbsp&nbspAplicar Filtro&nbsp&nbsp</button></a><br>&nbsp
+</div>
+<div class="col-lg-9">
     {% autoescape off %}
     {{ mapa }}
     {% endautoescape %}
-{% endblock mapa %}
-
-
-{% block hueco %}
-    cambiadores<br>_explotacion.html
-{% endblock hueco %}
-
-{% block elementos %}
-<table>
-    <thead>
-        <th>Código</th>
-        <th>Nombre</th>
-        <th>Versión</th>
-        <th>Fabricante</th>
-        <th>Mantenedor</th>
-        <th>fecha_fab</th>
-        <th>num_cambios</th>
-    </thead>
-    <tbody>
-        {% for cambiador in cambiadores %}
-        <tr> 
-            <td><a href = "{{ cambiador.get_absolute_url }}"> {{ cambiador.get_absolute_url }} </a></td>
-            <td>{{ cambiador.codigo }}</td>
-            <td>{{ cambiador.nombre }}</td>
-            <td>{{ cambiador.version }}</td>
-            <td>{{ cambiador.fabricante.organizacion.codigo }}</td>
-            <td>{{ cambiador.mantenedor.organizacion.codigo }}</td>
-            <td>{{ cambiador.fecha_fab }}</td>
-            <td>{{ cambiador.num_cambios }}</td>
-        </tr>
-    {% endfor %}
-
-    </tbody>
-</table>
-
-{% endblock elementos %}
+</div>
+</div>
+<div class="container-fluid d-lg-flex d-xxl-flex flex-row align-items-lg-start justify-content-xxl-start align-items-xxl-start">
+<div class="col-lg-2 offset-lg-0">
+    <h5>&nbspLista de Cambiadores:</h5>
+</div>
+<div class="col-lg-10">
+    <table class="table">
+        <thead>
+            <th>Código</th><th>Nombre</th><th>Versión</th><th>Fabricante</th><th>Mantenedor</th><th>Cambios</th>
+        </thead>
+        <tbody>
+            {% for cambiador in cambiadores %}
+            <tr> 
+                <td><a href = "{{ cambiador.get_absolute_url }}"> {{ cambiador.codigo }} </td>
+                <td>{{ cambiador.nombre }}</td>
+                <td>{{ cambiador.version }}</td>
+                <td>{{ cambiador.fabricante.organizacion }}</td>
+                <td>{{ cambiador.mantenedor.organizacion }}</td>
+                <td>{{ cambiador.num_cambios }}</td>
+            </tr>
+        {% endfor %}
+        </tbody>
+    </table>
+</div>
+</div>
+{% endblock cuerpo %}

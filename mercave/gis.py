@@ -55,6 +55,7 @@ def mapa_eje(eje, circulaciones):
     marker = folium.Marker(location = location, popup = popup, icon = folium.Icon(color="red"))
     mapa_int.add_child(marker) 
     # Posiciones
+
     for circulacion in circulaciones:    
         location = [circulacion.pinicio.puntored.lat, circulacion.pinicio.puntored.lng]
         color = 'blue'
@@ -87,7 +88,7 @@ def mapa_cambios(cambios):
 
     return mapa._repr_html_()
 
-def PloteaAlarmaCirc():
+def plotear_alarma_circulacion():
     x = list(range(10))
     ax = [-1.2,-0.3,4.5,5.3,1.4,-3.6,-5.9,0,2.2,1.1]
     ay = [2,5,0,-2,-5,-2,0,2,5,2]
@@ -95,12 +96,12 @@ def PloteaAlarmaCirc():
     temp = [23,25,28,29,28,27,28,29,30, 31]
     mid_box_a = BoxAnnotation(bottom=-5, top=5, fill_alpha=0.2, fill_color="#009E73")
     mid_box_t = BoxAnnotation(bottom=25, top=40, fill_alpha=0.2, fill_color="#009E73")
-    p1 = figure(title="Aceleraciones", x_axis_label='x', y_axis_label='m/s^2')
-    p2 = figure(title="Temperatura", x_axis_label='x', y_axis_label='ºC')
-    p1.line(x, ax, legend_label="ax", line_width=2)
-    p1.line(x, ay, legend_label="ay", color="blue", line_width=2)
-    p1.line(x, az, legend_label="az", color="red", line_width=2)   
-    p2.line(x, temp, legend_label="temp", color="red", line_width=2)  
+    p1 = figure(title="Aceleraciones", x_axis_label='x',)
+    p2 = figure(title="Temperatura", x_axis_label='x',)
+    p1.line(x, ax, legend_label="ax m/s^2", line_width=2)
+    p1.line(x, ay, legend_label="ay m/s^2", color="blue", line_width=2)
+    p1.line(x, az, legend_label="az m/s^2", color="red", line_width=2)   
+    p2.line(x, temp, legend_label="temp ºC", color="red", line_width=2)  
     p1.toolbar_location = None
     p2.toolbar_location = None
     p1.add_layout(mid_box_a)
@@ -108,3 +109,18 @@ def PloteaAlarmaCirc():
     r = row([p1, p2], sizing_mode="stretch_width")
     
     return file_html(r, CDN, "Alarma Circulación")
+
+def plotear_cambios(cambios):
+    fdM =[] 
+    ddM =[]
+    for cambio in cambios:
+        fdM.append(cambio.fdaM)
+        fdM.append(cambio.fdbM)
+        ddM.append(cambio.ddaM)
+        ddM.append(cambio.ddbM)
+
+    p1 = figure(title="Fuerza Descerrojamiento", x_axis_label='mm de desplazamiento de disco',)
+    p1.circle(ddM, fdM, legend_label="fd Kn", color="red", size=12)
+    p1.toolbar_location = None
+    
+    return file_html(p1, CDN, "Cambios")

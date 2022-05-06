@@ -8,7 +8,7 @@
     </div>
     <div class="col-lg-2 ">
         &nbsp<br>
-        <a href="#" ><button class="btn btn-danger" type="button">Ver Alarmas</button></a>
+        <a href="#" ><button class="btn btn-danger" type="button">Gestionar Alarmas</button></a>
     </div>
 </div>
     <div class="container-fluid d-lg-flex d-xxl-flex flex-row align-items-lg-start justify-content-xxl-start align-items-xxl-start">
@@ -32,7 +32,7 @@
             
         </div>
         <div class="col-lg-6">
-            <div class="row"><h6>Posiciones del eje en los últimos 4 días:</h6></div>
+            <div class="row"><h6>Posiciones del eje {{ eje.codigo }} en los últimos 4 días:</h6></div>
             <div class="row">
             {% autoescape off %}
                 {{ mapa_eje }}
@@ -42,7 +42,6 @@
     </div>
     <div class="container-fluid d-lg-flex d-xxl-flex flex-row align-items-lg-start justify-content-xxl-start align-items-xxl-start">
         <div class="col-lg-6 offset-lg-0">
-            <br>
             <h6>Cambios:</h6>
             <table class="table">
                 <thead class="table-light">
@@ -64,9 +63,8 @@
             </table>
         </div>
         <div class="col-lg-6">
-            <div class="row"><h6>Cambios realizados por el eje:</h6></div>
+            <div class="row"><h6>Cambios realizados por el eje {{ eje.codigo }}:</h6></div>
             <div class="row">
-            <br>
             {% autoescape off %}
                 {{ mapa_cambios }}
             {% endautoescape %}
@@ -75,18 +73,35 @@
     </div>
     <div class="container-fluid d-lg-flex d-xxl-flex flex-row align-items-lg-start justify-content-xxl-start align-items-xxl-start">
         <div class="col-lg-6 offset-lg-0">
-            <h6>Alarmas:</h6>
+            <h6><b>Alarmas en circulación:</b></h6>
             <table class="table">
                 <thead class="table-light">
                     <th>Fecha-hora</th><th>Mensaje</th><th>long</th><th>lat</th>
                 </thead>
                 <tbody>
+                    {% for alarma in alarmas_circulacion %}
                     <tr>
-                        <td>06/05/2022 14:34:15</td><td>Aceleraciones anormales en eje Z</td><td>-1.49876</td><td>40.04213</td>
+                        <td>{{ alarma.fecha_hora }}</td>
+                        <td>{{ alarma.mensaje }}</td>
+                        <td>{{ alarma.lng }}</td>
+                        <td>{{ alarma.lat }}</td>
                     </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+            <h6><b>Alarmas en cambios:</b></h6>
+            <table class="table">
+                <thead class="table-light">
+                    <th>Cambiador</th><th>Fecha-hora</th><th>Mensaje</th>
+                </thead>
+                <tbody>
+                    {% for alarma in alarmas_cambios %}
                     <tr>
-                        <td>06/05/2022 14:34:15</td><td>Excesiva temperatura</td><td>-1.49876</td><td>40.04213</td>
+                        <td>{{ alarma.cambio.cambiador }}</td>
+                        <td>{{ alarma.cambio.inicio }}</td>
+                        <td>{{ alarma.mensaje }}</td>
                     </tr>
+                    {% endfor %}
                 </tbody>
             </table>
         </div>
