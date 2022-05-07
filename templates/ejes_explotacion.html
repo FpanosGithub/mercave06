@@ -2,37 +2,28 @@
 {% block cuerpo %}
 <div class="container-fluid d-lg-flex d-xxl-flex flex-row align-items-lg-start justify-content-xxl-start align-items-xxl-start">
 <div class="col-lg-3 offset-lg-0">
-    <h5>Ejes</h5>
-    <h6>Filtro:</h6>
     <table class="table">
-        <thead class="table-light">
-            <th>Fabricantes: </th>
+        <thead class="table-dark">
+            <th>Filtro de ejes a mostrar:</th>
         </thead>
-        <tbody >
+        <tbody>
+            <tr class="table-light"><td>Fabricantes:</td></tr>
             {% for fabricante in fabricantes %}
-            <tr><td><input type = "checkbox">{{ fabricante.organizacion.codigo }}</td></tr>
+            <tr class="table-secondary"><td><input type = "checkbox">&nbsp&nbsp{{ fabricante.organizacion }}</td></tr>
             {% endfor %}
-        </tbody>
-    </table>
-    <table class="table">
-        <thead class="table-light">
-            <th>Mantenedores: </th>
-        </thead>
-        <tbody >
+            <tr class="table-light"><td>Mantenedores:</td></tr>
             {% for mantenedor in mantenedores %}
-            <tr><td><input type = "checkbox">{{ mantenedor.organizacion.codigo }}</td></tr>
+            <tr class="table-secondary"><td><input type = "checkbox">&nbsp&nbsp{{ mantenedor.organizacion }}</td></tr>
             {% endfor %}
-            </tbody>
-    </table>
-    <table class="table">
-        <thead class="table-light"> 
-            <th>Keepers: </th>
-        </thead>
-        <tbody >
-            {% for keeper in keepers %}
-            <tr><td><input type = "checkbox">{{ keeper.organizacion.codigo }}</td></tr>
+            <tr class="table-light"><td>Keepers:</td></tr>
+            {% for Keeper in Keepers %}
+            <tr class="table-secondary"><td><input type = "checkbox">&nbsp&nbsp{{ Keepers.organizacion }}</td></tr>
             {% endfor %}
-            </tbody>
+            <tr class="table-light"><td>Operadores:</td></tr>
+            {% for operador in operadores %}
+            <tr class="table-secondary"><td><input type = "checkbox">&nbsp&nbsp{{ operador.organizacion }}</td></tr>
+            {% endfor %}
+         </tbody>
     </table>
     <a href="#" ><button class="btn btn-primary" type="button" style="margin-left: 10px;">&nbsp&nbspAplicar Filtro&nbsp&nbsp</button></a><br>&nbsp
 </div>
@@ -43,17 +34,15 @@
 </div>
 </div>
 <div class="container-fluid d-lg-flex d-xxl-flex flex-row align-items-lg-start justify-content-xxl-start align-items-xxl-start">
-<div class="col-lg-2 offset-lg-0">
-    <h5>&nbspLista de Ejes:</h5>
-</div>
-<div class="col-lg-10">
-    <table class="table">
-        <thead>
-            <th>Código</th><th>Versión</th><th>Fabricante</th><th>Keeper</th><th>Mantenedor</th><th>Cambios</th><th>km</th><th>Alarmas Circul.</th><th>Alarmas Camb.</th>
+<div class="col-lg-12">
+    <table class="table table-striped table-hover">
+        <thead class="table-dark">
+            <th>lista de ejes:</th><th>Código</th><th>Versión</th><th>Fabricante</th><th>Keeper</th><th>Mantenedor</th><th>Cambios</th><th>km</th><th>Alarmas Circ.</th><th>Alarmas Camb.</th>
         </thead>
         <tbody>
             {% for eje in ejes %}
             <tr> 
+                <td></td>
                 <td><a href = "{{ eje.get_absolute_url }}"> {{ eje.codigo }} </td></a>
                 <td>{{ eje.version }}</td>
                 <td>{{ eje.fabricante.organizacion.codigo }}</td>

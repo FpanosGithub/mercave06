@@ -13,7 +13,13 @@ def VistaEjes(request):
     ejes = Eje.objects.all()
     mapa = mapa_ejes(ejes)
 
-    return render(request, 'ejes_explotacion.html', context={'mapa':mapa, 'fabricantes':fabricantes, 'mantenedores':mantenedores, 'keepers':keepers, 'operadores':operadores, 'ejes':ejes})
+    return render(request, 'ejes_explotacion.html', context={
+                    'mapa':mapa,
+                    'fabricantes':fabricantes,
+                    'mantenedores':mantenedores,
+                    'keepers':keepers,
+                    'operadores':operadores,
+                    'ejes':ejes})
 
 #@login_required
 def VistaCambiadores(request):
@@ -22,7 +28,11 @@ def VistaCambiadores(request):
     cambiadores = Cambiador.objects.all()
     mapa = mapa_cambiadores(cambiadores)
 
-    return render(request, 'cambiadores_explotacion.html', context={'mapa':mapa, 'fabricantes':fabricantes, 'mantenedores':mantenedores, 'cambiadores':cambiadores})
+    return render(request, 'cambiadores_explotacion.html', context={
+                    'mapa':mapa, 
+                    'fabricantes':fabricantes, 
+                    'mantenedores':mantenedores, 
+                    'cambiadores':cambiadores})
 
 #@login_required
 def VistaEje(request, pk):
@@ -55,4 +65,10 @@ def VistaCambiador(request, pk):
     grd, grc, gre = plotear_cambios(cambios)
     mapa = mapa_cambiador(cambiador_ficha)
     
-    return render(request, 'ficha_cambiador.html', context={'cambiador':cambiador_ficha, 'cambios': cambios, 'grd':grd, 'grc':grc, 'gre':gre, 'mapa':mapa})
+    return render(request, 'ficha_cambiador.html', context={
+                    'cambiador':cambiador_ficha, 
+                    'cambios': cambios, 
+                    'grd':grd, 
+                    'grc':grc, 
+                    'gre':gre, 
+                    'mapa':mapa})
