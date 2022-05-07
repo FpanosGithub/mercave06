@@ -9,60 +9,102 @@
 </head>
 
 <body>
-    <nav class="navbar navbar-light navbar-expand-md">
-        <div class="container-fluid"><a class="navbar-brand" href="/" style="font-size: 34px;">mercave</a><button data-bs-toggle="collapse" class="navbar-toggler" data-bs-target="#navcol-1"><span class="visually-hidden">Toggle navigation</span><span class="navbar-toggler-icon"></span></button>
-            <div class="collapse navbar-collapse" id="navcol-1" style="margin-right: 0px;margin-left: 30px;">
-                <ul class="navbar-nav">
+<nav class="navbar navbar-expand-lg navbar-light bg-light">
+    <div class="container-fluid">
+      <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarTogglerDemo03" aria-controls="navbarTogglerDemo03" aria-expanded="false" aria-label="Toggle navigation">
+        <span class="navbar-toggler-icon"></span>
+      </button>
+      <a class="navbar-brand" href="/" style="font-size: 34px;">mercave</a>
+      <div class="collapse navbar-collapse" id="navbarTogglerDemo03">
+        <ul class="navbar-nav me-auto mb-2 mb-lg-0">
+            <li class="nav-item dropdown">
+                <a class="nav-link dropdown-toggle" href="#" id="navbarScrollingDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+                    Explotación
+                </a>
+                <ul class="dropdown-menu" aria-labelledby="navbarScrollingDropdown">
+                    <li><a class="dropdown-item" href="{% url 'ejes_expl' %}">Ejes</a></li>
+                    <li><a class="dropdown-item" href="{% url 'cambiadores_expl' %}">Cambiadores</a></li>
+                    <li><a class="dropdown-item" href="#">Composiciones</a></li>
+                </ul>
+            </li>
+            <li class="nav-item dropdown">
+                <a class="nav-link dropdown-toggle" href="#" id="navbarScrollingDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+                    Gestion Adif
+                </a>
+                <ul class="dropdown-menu" aria-labelledby="navbarScrollingDropdown">
+                    <li><h6 class="dropdown-header">Actores</h6></li>
+                    <li><hr class="dropdown-divider"></li>
+                    <li><a class="dropdown-item" href="#">Diseñadores</a></li>
+                    <li><a class="dropdown-item" href="#">Fabricantes</a></li>
+                    <li><a class="dropdown-item" href="#">Mantenedores</a></li>
+                    <li><a class="dropdown-item" href="#">Keepers</a></li>
+                    <li><a class="dropdown-item" href="#">Operadores</a></li>
+                    <li><a class="dropdown-item" href="#">Certificadores</a></li>
+                    <li><h6 class="dropdown-header">Autorizaciones</h6></li>
+                    <li><hr class="dropdown-divider"></li>
+                    <li><a class="dropdown-item" href="#">Ejes</a></li>
+                    <li><a class="dropdown-item" href="#">Cambiadores</a></li> 
+                    <li><a class="dropdown-item" href="#">Vagones</a></li>
+                    <li><h6 class="dropdown-header">Certificaciones ETI</h6></li>
+                    <li><hr class="dropdown-divider"></li>
+                    <li><a class="dropdown-item" href="#">Versiones Ejes</a></li>
+                    <li><a class="dropdown-item" href="#">Versiones Cambiadores</a></li>
+                </ul>
+            </li>   
+            <li class="nav-item dropdown">
+                <a class="nav-link dropdown-toggle" href="#" id="navbarScrollingDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+                    Ingeniería
+                </a>
+                <ul class="dropdown-menu" aria-labelledby="navbarScrollingDropdown">
+                    <li><h6 class="dropdown-header">Diseño</h6></li>
+                    <li><hr class="dropdown-divider"></li>
+                    <li><a class="dropdown-item" href="#">Versiones de Ejes</a></li>
+                    <li><a class="dropdown-item" href="#">Cambiadores</a></li>
+                    <li><a class="dropdown-item" href="#">Bogies</a></li>
+                    <li><h6 class="dropdown-header">Ensayos</h6></li>
+                    <li><hr class="dropdown-divider"></li>
+                    <li><a class="dropdown-item" href="#">Banco de Ejes</a></li>
+                    <li><a class="dropdown-item" href="#">Banco de Fatiga</a></li> 
+                    <li><a class="dropdown-item" href="#">Ensayos en Vía</a></li>
+                    <li><h6 class="dropdown-header">Modelos IA</h6></li>
+                    <li><hr class="dropdown-divider"></li>
+                    <li><a class="dropdown-item" href="#">Cambio de Ancho</a></li>
+                    <li><a class="dropdown-item" href="#">Circulación</a></li>
+                </ul>
+            </li>   
+          </li>
+          <li class="nav-item dropdown">
+            <a class="nav-link dropdown-toggle" href="#" id="navbarScrollingDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+                Fabricación
+            </a>
+            <ul class="dropdown-menu" aria-labelledby="navbarScrollingDropdown">
+                <li><a class="dropdown-item" href="#">Ejes</a></li>
+                <li><a class="dropdown-item" href="#">Cambiadores</a></li>
+            </ul>
+        </li>
+        <li class="nav-item dropdown">
+            <a class="nav-link dropdown-toggle" href="#" id="navbarScrollingDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+                Mantenimiento
+            </a>
+            <ul class="dropdown-menu" aria-labelledby="navbarScrollingDropdown">
+                <li><a class="dropdown-item" href="#">Ejes</a></li>
+                <li><a class="dropdown-item" href="#">Cambiadores</a></li>
+            </ul>
+        </li> 
+        <li class = "nav-item">
+            <li><a class="nav-link" href="#">{{ user.username }}</a></li>
+            <li><a class="nav-link" href="#">{{ user.organizacion }}</a></li>
+        </li>
+        <form class="d-flex">
+            <a class="nav-link" href="#">&nbsp&nbsp&nbsp&nbsp<img src="{% static '/images/adif_s.jpeg' %}">&nbsp&nbsp&nbsp&nbsp</a>
+            <button class="btn btn-primary" type="button">&nbsp&nbspSalir&nbsp&nbsp</button>
+        </form>
+      </div>
+    </div>
+  </nav>
 
-                    <li class="nav-item dropdown"><a class="dropdown-toggle nav-link" aria-expanded="false" data-bs-toggle="dropdown" href="#">Explotación</a>
-                        <div class="dropdown-menu"><a class="dropdown-item" href="{% url 'ejes_expl' %}">Ejes</a><a class="dropdown-item" href="{% url 'cambiadores_expl' %}">Cambiadores</a><a class="dropdown-item" href="#">Composiciones</a></div>
-                    </li>
-                    
-                    <li class="nav-item dropdown"><a class="dropdown-toggle nav-link" aria-expanded="false" data-bs-toggle="dropdown" href="#">Gestión Adif&nbsp;</a>
-                        <div class="dropdown-menu">
-                            <h6 class="dropdown-header">Actores</h6><a class="dropdown-item" href="#">Diseñadores</a><a class="dropdown-item" href="#">Fabricantes</a><a class="dropdown-item" href="#">Mantenedores</a><a class="dropdown-item" href="#">Operadores</a><a class="dropdown-item" href="#">Certificadores</a>
-                            <div class="dropdown-divider"></div>
-                            <h6 class="dropdown-header">Autorizaciones</h6><a class="dropdown-item" href="#">Ejes</a><a class="dropdown-item" href="#">Cambiadores</a><a class="dropdown-item" href="#">Vagones</a>
-                            <div class="dropdown-divider"></div>
-                            <h6 class="dropdown-header">Certificaciones E.T.I</h6><a class="dropdown-item" href="#">Versiones ejes</a><a class="dropdown-item" href="#">Versines Cambiadores</a>
-                        </div>
-                    </li>
-                   
-                    <li class="nav-item dropdown"><a class="dropdown-toggle nav-link" aria-expanded="false" data-bs-toggle="dropdown" href="#">Ingeniería&nbsp;</a>
-                        <div class="dropdown-menu">
-                            <h6 class="dropdown-header">Diseño</h6><a class="dropdown-item" href="#">Versiones de Ejes</a><a class="dropdown-item" href="#">Cambiadores</a><a class="dropdown-item" href="#">Bogies</a>
-                            <div class="dropdown-divider"></div>
-                            <h6 class="dropdown-header">Ensayos</h6><a class="dropdown-item" href="#">Bancos de Ensayo</a><a class="dropdown-item" href="#">Ensayos en vía</a><a class="dropdown-item" href="#">Modelos IA</a>
-                        </div>
-                    </li>
-                   
-                    <li class="nav-item dropdown"><a class="dropdown-toggle nav-link" aria-expanded="false" data-bs-toggle="dropdown" href="#">Fabricación&nbsp;</a>
-                        <div class="dropdown-menu"><a class="dropdown-item" href="#">Ejes</a><a class="dropdown-item" href="#">Cambiadores</a></div>
-                    </li>
-
-                    <li class="nav-item dropdown"><a class="dropdown-toggle nav-link" aria-expanded="false" data-bs-toggle="dropdown" href="#">Mantenimiento&nbsp;</a>
-                        <div class="dropdown-menu"><a class="dropdown-item" href="#">Ejes</a><a class="dropdown-item" href="#">Cambiadores</a><a class="dropdown-item" href="#">Vagones</a></div>
-                    </li>
-                    <li class="nav-item"></li>
-                    <li class="nav-item"></li>
-                </ul>
-                <ul class="navbar-nav">
-                    <li class="nav-item" style="border-left-width: 2px;border-left-color: var(--bs-gray);margin-left: 10px;"></li>
-                    <li class="nav-item"><a class="nav-link" href="#">{{ user.username }}</a></li>
-                    <li class="nav-item"></li>
-                    <li class="nav-item"><a class="nav-link" href="#">{{ user.organizacion }}</a></li>
-                    <li class="nav-item">&nbsp&nbsp</li>
-                </ul>
-                <ul class="navbar-nav">
-                    
-                    <li class="nav-item"><a href="{% url 'account_logout' %}"><button class="btn btn-primary" type="button" style="margin-left: 10px;">Salir</button></a>&nbsp&nbsp&nbsp&nbsp</li>
-                    <li class="nav-item"><img src="{% static '/images/adif_s.jpeg' %}"></li>
-                </ul>
-            </div>
-        </div>
-    </nav>
-    {% block cuerpo %}
-    {% endblock cuerpo %}
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.bundle.min.js"></script>
+{% block cuerpo %}
+{% endblock cuerpo %}
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.bundle.min.js"></script>
 </body>
 </html>
