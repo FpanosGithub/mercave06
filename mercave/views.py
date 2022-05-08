@@ -1,6 +1,6 @@
 from django.contrib.auth.decorators import login_required
 from django.shortcuts import render
-from .models import Fabricante, Mantenedor, Keeper, Operador, Eje, Cambiador, Cambio, Circulacion, AlarmaCambio, AlarmaCirculacion
+from .models import Fabricante, Mantenedor, Keeper, Operador, Eje, Cambiador, Cambio, CirculacionEje, AlarmaCambio, AlarmaCirculacion
 from .gis import mapa_ejes, mapa_cambiadores, mapa_cambiador, mapa_eje, mapa_cambios, plotear_alarma_circulacion, plotear_cambios
 
 # Create your views here.
@@ -38,7 +38,7 @@ def VistaCambiadores(request):
 def VistaEje(request, pk):
     eje_ficha = Eje.objects.get(pk=pk)
     cambios = Cambio.objects.filter(eje=eje_ficha)
-    circulaciones = Circulacion.objects.filter(eje=eje_ficha)[:5]
+    circulaciones = CirculacionEje.objects.filter(eje=eje_ficha)[:5]
     alarmas_circulacion = AlarmaCirculacion.objects.filter(circulacion__eje__pk=eje_ficha.pk)
     alarmas_cambios = AlarmaCambio.objects.filter(cambio__eje__pk=eje_ficha.pk)
     mapa_situacion_eje = mapa_eje(eje_ficha, circulaciones)

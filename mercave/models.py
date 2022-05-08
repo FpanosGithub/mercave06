@@ -77,39 +77,9 @@ class Certificador(models.Model):
         return self.organizacion.codigo
     def get_absolute_url(self):
         return reverse("ficha_certificador", kwargs={'pk':self.pk})
-
-#!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
-# Elementos del sistema Mercave
-#!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
-class Composicion(models.Model):
-    codigo = models.CharField(max_length=16, unique= True)
-    descripcion = models.CharField(max_length=100, default = ' ')
-    operador= models.ForeignKey(Operador, on_delete=models.CASCADE)
-    lng = models.FloatField(default=-3.9820) # grados
-    lat = models.FloatField(default=40.2951) # grados
-
-    def __str__(self):
-        return self.codigo
-    def get_absolute_url(self):
-        return reverse("ficha_tren", kwargs={'pk':self.pk})
-
-class Vagon(models.Model):
-    codigo = models.CharField(max_length=16, unique= True)
-    tipo = models.CharField(max_length=20,default = ' ')
-    descripcion = models.CharField(max_length=100, default = ' ')
-    foto = models.ImageField(upload_to='vagones/', blank = True)
-    operador= models.ForeignKey(Operador, on_delete=models.RESTRICT)
-    keeper= models.ForeignKey(Keeper, on_delete=models.RESTRICT)
-    mantenedor= models.ForeignKey(Mantenedor, on_delete=models.RESTRICT, limit_choices_to={'de_vagones': True},)
-    composicion= models.ForeignKey(Composicion, on_delete=models.RESTRICT)
-    lng = models.FloatField(default=-3.9820) # grados
-    lat = models.FloatField(default=40.2951) # grados
-
-    def __str__(self):
-        return self.codigo
-    def get_absolute_url(self):
-        return reverse("ficha_vagon", kwargs={'pk':self.pk})
-
+#!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+# Modelos que representan la ingeniería de los elementos mercave / Activos inmateriales
+#!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
 class VersionEje(models.Model):
     codigo= models.CharField(max_length=16, unique= True)
     opciones_anchos =  [('UIC-IB', 'UIC(1435) <> IBÉRICO (1668)'),
@@ -124,34 +94,10 @@ class VersionEje(models.Model):
     fecha_aprovacion = models.DateField()
     certificador = models.ForeignKey(Certificador, on_delete=models.RESTRICT)
     fecha_certificacion = models.DateField()
-
     def __str__(self):
         return self.codigo
     def get_absolute_url(self):
         return reverse("ficha_version_eje", kwargs={'pk':self.pk})
-            
-class Eje(models.Model):
-    codigo = models.CharField(max_length=10, unique= True)
-    version= models.ForeignKey(VersionEje, on_delete=models.RESTRICT)
-    fabricante = models.ForeignKey(Fabricante, on_delete=models.RESTRICT, limit_choices_to={'de_ejes': True},)
-    keeper = models.ForeignKey(Keeper, on_delete=models.RESTRICT)
-    operador = models.ForeignKey(Operador, on_delete=models.RESTRICT)
-    mantenedor = models.ForeignKey(Mantenedor, on_delete=models.RESTRICT)
-    fecha_fab = models.DateField(auto_now_add=True)
-    num_cambios = models.IntegerField(default=0)
-    km = models.FloatField(default=0)                       # km
-    mantenimiento = models.CharField(max_length=16)
-    coef_trabajo = models.FloatField(default=0)
-    vagon = models.ForeignKey(Vagon, on_delete=models.RESTRICT)
-    alarmas_cambio = models.IntegerField(default=0)
-    alarmas_circulacion = models.IntegerField(default=0)
-    lng = models.FloatField(default=-3.9820)
-    lat = models.FloatField(default=40.2951)
-
-    def __str__(self):
-        return self.codigo
-    def get_absolute_url(self):
-        return reverse("ficha_eje", kwargs={'pk':self.pk})
 
 class VersionCambiador(models.Model):
     codigo= models.CharField(max_length=16, unique= True)
@@ -169,11 +115,86 @@ class VersionCambiador(models.Model):
     fecha_aprovacion = models.DateField()
     certificador = models.ForeignKey(Certificador, on_delete=models.RESTRICT)
     fecha_certificacion = models.DateField()
-
     def __str__(self):
         return self.codigo
     def get_absolute_url(self):
         return reverse("ficha_version_cambiador", kwargs={'pk':self.pk})
+            
+
+#!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+# Elementos del sistema Mercave / Activos físicos
+#!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+# Aquí hay algo de locura. Las composiciones tienen vagones y estos a veces tienen bogies
+# que llevan ejes y a veces no llevan bogies y los ejes van directamente a los vagones.
+# la estructura de datos es flexible y se supone que las funciones que tengan que formar 
+# composiciones, vagones, etc se encargarán e mantener todo coherentemente. ahora un eje 
+# podría quedar asignado a un bogie y a un vagón que no van juntos.
+#!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+class Composicion(models.Model):
+    codigo = models.CharField(max_length=16, unique= True)
+    descripcion = models.CharField(max_length=100, default = ' ')
+    operador= models.ForeignKey(Operador, on_delete=models.CASCADE)
+    lng = models.FloatField(default=-3.9820) # grados
+    lat = models.FloatField(default=40.2951) # grados
+    def __str__(self):
+        return self.codigo
+    def get_absolute_url(self):
+        return reverse("ficha_composicion", kwargs={'pk':self.pk})
+
+class Vagon(models.Model):
+    codigo = models.CharField(max_length=16, unique= True)
+    tipo = models.CharField(max_length=20,default = ' ')
+    descripcion = models.CharField(max_length=100, default = ' ')
+    num_bogies= models.IntegerField(default=2, null=True, blank=True)
+    num_ejes = models.IntegerField(default=4, null=True, blank=True)
+    foto = models.ImageField(upload_to='vagones/', blank = True)
+    operador= models.ForeignKey(Operador, on_delete=models.RESTRICT)
+    keeper= models.ForeignKey(Keeper, on_delete=models.RESTRICT)
+    mantenedor= models.ForeignKey(Mantenedor, on_delete=models.RESTRICT, limit_choices_to={'de_vagones': True},)
+    composicion= models.ForeignKey(Composicion, on_delete=models.RESTRICT, null=True, blank=True)
+    lng = models.FloatField(default=-3.9820) # grados
+    lat = models.FloatField(default=40.2951) # grados
+    def __str__(self):
+        return self.codigo
+    def get_absolute_url(self):
+        return reverse("ficha_vagon", kwargs={'pk':self.pk})
+
+class Bogie(models.Model):
+    codigo = models.CharField(max_length=16, unique= True)
+    tipo = models.CharField(max_length=20,default = ' ')
+    foto = models.ImageField(upload_to='bogies/', blank = True)
+    operador= models.ForeignKey(Operador, on_delete=models.RESTRICT)
+    keeper= models.ForeignKey(Keeper, on_delete=models.RESTRICT)
+    mantenedor= models.ForeignKey(Mantenedor, on_delete=models.RESTRICT, limit_choices_to={'de_vagones': True},)
+    vagon= models.ForeignKey(Vagon, on_delete=models.RESTRICT, null=True, blank=True)
+    lng = models.FloatField(default=-3.9820) # grados
+    lat = models.FloatField(default=40.2951) # grados
+    def __str__(self):
+        return self.codigo
+    def get_absolute_url(self):
+        return reverse("ficha_bogie", kwargs={'pk':self.pk})
+
+class Eje(models.Model):
+    codigo = models.CharField(max_length=10, unique= True)
+    version= models.ForeignKey(VersionEje, on_delete=models.RESTRICT)
+    fabricante = models.ForeignKey(Fabricante, on_delete=models.RESTRICT, limit_choices_to={'de_ejes': True},)
+    keeper = models.ForeignKey(Keeper, on_delete=models.RESTRICT)
+    operador = models.ForeignKey(Operador, on_delete=models.RESTRICT)
+    mantenedor = models.ForeignKey(Mantenedor, on_delete=models.RESTRICT)
+    fecha_fab = models.DateField(auto_now_add=True)
+    num_cambios = models.IntegerField(default=0)
+    km = models.FloatField(default=0)                       # km
+    mantenimiento = models.CharField(max_length=16)
+    coef_trabajo = models.FloatField(default=0)
+    bogie = models.ForeignKey(Bogie, on_delete=models.RESTRICT, null=True, blank=True)
+    vagon = models.ForeignKey(Vagon, on_delete=models.RESTRICT, null=True, blank=True)
+    alarmas = models.IntegerField(default=0, null=True, blank=True)
+    lng = models.FloatField(default=-3.9820)
+    lat = models.FloatField(default=40.2951)
+    def __str__(self):
+        return self.codigo
+    def get_absolute_url(self):
+        return reverse("ficha_eje", kwargs={'pk':self.pk})
 
 class Cambiador(models.Model):
     codigo = models.CharField(max_length=16, unique= True)
@@ -193,9 +214,39 @@ class Cambiador(models.Model):
         return reverse("ficha_cambiador", kwargs={'pk':self.pk})
 
 #!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
-# Eventos
+# Modelos que identifican puntos singulares de la red ferroviaria
 #!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+class Linea(models.Model):
+    codigo = models.CharField(max_length=16, unique= True)
+    nombre = models.CharField(max_length=100, null= True, blank = True)
+    def __str__(self):
+        return (str(self.codigo) + '-' + str(self.nombre))
+    def get_absolute_url(self):
+        return reverse("ficha_linea", kwargs={'pk':self.pk})
 
+class PuntoRed(models.Model):
+    codigo = models.CharField(max_length=16, unique= True)
+    descripcion = models.CharField(max_length=100, null= True, blank = True)
+    linea = models.ForeignKey(Linea, on_delete=models.RESTRICT)
+    pkilometrico = models.FloatField(null= True, blank = True)
+    lng = models.FloatField(default=-3.9820)
+    lat = models.FloatField(default=40.2951)
+    def __str__(self):
+        return (self.codigo)
+
+# Inicio y final son para poder referenciar 2 puntos de red dentro de una msma circulación
+class Inicio(models.Model):
+    puntored = models.ForeignKey(PuntoRed, on_delete=models.CASCADE)
+    def __str__(self):
+        return self.puntored.codigo
+class Final(models.Model):
+    puntored = models.ForeignKey(PuntoRed, on_delete=models.CASCADE)
+    def __str__(self):
+        return self.puntored.codigo
+
+#!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+# EVENTOS. Llegan desde API de mercave_accion (IoT, IA).
+#!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
 class Cambio(models.Model):
     eje = models.ForeignKey(Eje, on_delete=models.CASCADE)
     num_cambio_eje = models.IntegerField(default=0)
@@ -229,41 +280,40 @@ class Cambio(models.Model):
     tebm = models.FloatField(default = 35000)  # tiempo (ms) desde inicio punto de F minima en encerrojamiento
     febm = models.FloatField(default = 10)    # fuerza (KN) mínima en encerrojamiento
     debm = models.FloatField(default = 20)  # desplazamiento (mm) de disco en punto de F mínima en encerrojamiento
-
     def __str__(self):
         return (str(self.inicio) + '-' + str(self.cambiador.nombre) + '- eje: ' + str(self.eje.codigo))
     def get_absolute_url(self):
         return reverse("ficha_cambio", kwargs={'pk':self.pk})
 
-class Linea(models.Model):
-    codigo = models.CharField(max_length=16, unique= True)
-    nombre = models.CharField(max_length=100, null= True, blank = True)
+# definimos 3 circulaciones aunque con 1 (composicion) debería bastar. De momento nos simplifica un poco
+# la vida a la hora de mostrar las circulaciones de un eje.
+class CirculacionComposicion(models.Model):
+    composicion = models.ForeignKey(Composicion, on_delete=models.CASCADE)
+    pinicio = models.ForeignKey(Inicio, on_delete=models.RESTRICT, null= True, blank = True)
+    pfinal = models.ForeignKey(Final, on_delete=models.RESTRICT, null= True, blank = True)
+    dia = models.DateField()
+    Vmed = models.FloatField(default = 2.77)
+    km = models.FloatField(default = 340)
+    alarmas = models.BooleanField(default=False)
     def __str__(self):
-        return (str(self.codigo) + '-' + str(self.nombre))
+        return (str(self.eje.codigo) + '-' + str(self.dia))
     def get_absolute_url(self):
-        return reverse("ficha_linea", kwargs={'pk':self.pk})
+        return reverse("ficha_circulacion_composicion", kwargs={'pk':self.pk})
 
-class PuntoRed(models.Model):
-    codigo = models.CharField(max_length=16, unique= True)
-    descripcion = models.CharField(max_length=100, null= True, blank = True)
-    linea = models.ForeignKey(Linea, on_delete=models.RESTRICT)
-    pkilometrico = models.FloatField(null= True, blank = True)
-    lng = models.FloatField(default=-3.9820)
-    lat = models.FloatField(default=40.2951)
+class CirculacionVagon(models.Model):
+    vagon = models.ForeignKey(Vagon, on_delete=models.CASCADE)
+    pinicio = models.ForeignKey(Inicio, on_delete=models.RESTRICT, null= True, blank = True)
+    pfinal = models.ForeignKey(Final, on_delete=models.RESTRICT, null= True, blank = True)
+    dia = models.DateField()
+    Vmed = models.FloatField(default = 2.77)
+    km = models.FloatField(default = 340)
+    alarmas = models.BooleanField(default=False)
     def __str__(self):
-        return (self.codigo)
+        return (str(self.eje.codigo) + '-' + str(self.dia))
+    def get_absolute_url(self):
+        return reverse("ficha_circulacion_vagon", kwargs={'pk':self.pk})
 
-class Inicio(models.Model):
-    puntored = models.ForeignKey(PuntoRed, on_delete=models.CASCADE)
-    def __str__(self):
-        return self.puntored.codigo
-
-class Final(models.Model):
-    puntored = models.ForeignKey(PuntoRed, on_delete=models.CASCADE)
-    def __str__(self):
-        return self.puntored.codigo
-
-class Circulacion(models.Model):
+class CirculacionEje(models.Model):
     eje = models.ForeignKey(Eje, on_delete=models.CASCADE)
     pinicio = models.ForeignKey(Inicio, on_delete=models.RESTRICT, null= True, blank = True)
     pfinal = models.ForeignKey(Final, on_delete=models.RESTRICT, null= True, blank = True)
@@ -271,24 +321,34 @@ class Circulacion(models.Model):
     Vmed = models.FloatField(default = 2.77)
     km = models.FloatField(default = 340)
     alarmas = models.BooleanField(default=False)
-
     def __str__(self):
         return (str(self.eje.codigo) + '-' + str(self.dia))
     def get_absolute_url(self):
-        return reverse("ficha_circulacion", kwargs={'pk':self.pk})
-    
+        return reverse("ficha_circulacion_eje", kwargs={'pk':self.pk})
+
+# PuntoTransito son eventos singulares en puntos de la red en un instante determinado donde
+# se ha producido una alarma u otro evento destacable. Se asocia a una circulación de un eje concreto
+class PuntoTransito(models.Model):
+    fecha_hora = fecha_hora = models.DateTimeField(auto_now_add=True)
+    punto_red  = models.ForeignKey(PuntoRed, on_delete=models.CASCADE, null= True, blank = True)
+    circulacion = models.ForeignKey(CirculacionEje, on_delete=models.CASCADE, null= True, blank = True)
+    def __str__(self):
+        return (str(self.fecha_hora) + '-' + str(self.eje.punto))
+
+
+#!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
 class AlarmaCambio(models.Model):
     cambio = models.ForeignKey(Cambio, on_delete=models.CASCADE)
     mensaje = models.CharField(max_length=30)
     vista = models.BooleanField(default=False)
-
     def __str__(self):
         return (self.mensaje)
     def get_absolute_url(self):
         return reverse("alarma_cambio", kwargs={'pk':self.pk})
     
 class AlarmaCirculacion(models.Model):
-    circulacion = models.ForeignKey(Circulacion, on_delete=models.CASCADE)
+    circulacion = models.ForeignKey(CirculacionEje, on_delete=models.CASCADE, null= True, blank = True)
+    punto_transito = models.ForeignKey(PuntoTransito, on_delete=models.CASCADE, null= True, blank = True)
     fecha_hora = models.DateTimeField()
     mensaje = models.CharField(max_length=30)
     lng = models.FloatField(default=-3.9820, null= True, blank = True)
