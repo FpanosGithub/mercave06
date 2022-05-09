@@ -296,7 +296,7 @@ class CirculacionComposicion(models.Model):
     km = models.FloatField(default = 340)
     alarmas = models.BooleanField(default=False)
     def __str__(self):
-        return (str(self.eje.codigo) + '-' + str(self.dia))
+        return (str(self.composicion.codigo) + '-' + str(self.dia))
     def get_absolute_url(self):
         return reverse("ficha_circulacion_composicion", kwargs={'pk':self.pk})
 
@@ -309,7 +309,7 @@ class CirculacionVagon(models.Model):
     km = models.FloatField(default = 340)
     alarmas = models.BooleanField(default=False)
     def __str__(self):
-        return (str(self.eje.codigo) + '-' + str(self.dia))
+        return (str(self.vagon.codigo) + '-' + str(self.dia))
     def get_absolute_url(self):
         return reverse("ficha_circulacion_vagon", kwargs={'pk':self.pk})
 
