@@ -89,6 +89,7 @@ def VistaComposicion(request, pk):
     circulaciones = CirculacionComposicion.objects.filter(composicion=composicion_ficha)[:5]
     vagones = Vagon.objects.filter(composicion=composicion_ficha)
     
+    
     mapa_situacion_composicion = mapa_composicion(composicion_ficha, circulaciones)
     
     return render(request, 'ficha_composicion.html', context={
