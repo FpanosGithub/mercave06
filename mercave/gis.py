@@ -24,6 +24,35 @@ def mapa_ejes(ejes):
 
     return mapa._repr_html_()
 
+def mapa_eje(eje, circulaciones):
+    mapa_int = folium.Map((eje.lat, eje.lng), zoom_start=6)
+    # Pop up eje
+    location = [eje.lat, eje.lng]
+    html =  '<h5><b>EJE número: </b></h5>' + str(eje.codigo) +\
+            '<br><b>Versión: </b>' + str(eje.version) +\
+            '<br><b>Fabricante: </b>' + str(eje.fabricante) +\
+            '<br><b>Num. Cambios: </b>' + str(eje.num_cambios) +\
+            '<br><b>Kilómetros: </b>' + str(eje.km)
+    popup = folium.Popup(html = html, max_width=150)
+    marker = folium.Marker(location = location, popup = popup, icon = folium.Icon(color="red"))
+    mapa_int.add_child(marker) 
+    # Posiciones
+
+    for circulacion in circulaciones:    
+        location = [circulacion.pinicio.puntored.lat, circulacion.pinicio.puntored.lng]
+        color = 'blue'
+        popup = str(circulacion.pinicio.puntored.descripcion) + ' - ' + str(circulacion.dia)
+        folium.CircleMarker(
+            location = location,
+            radius = 10,
+            popup= popup,
+            color=color,
+            fill = True,
+            fill_color = color,
+        ).add_to(mapa_int)
+
+    return mapa_int._repr_html_()
+
 def mapa_cambiadores(cambiadores):
     mapa = folium.Map((39.8000, -2.9019), zoom_start=6)
     mc = MarkerCluster()
@@ -59,23 +88,37 @@ def mapa_cambiador(cambiador):
 
     return mapa._repr_html_()
 
-def mapa_eje(eje, circulaciones):
-    mapa_int = folium.Map((eje.lat, eje.lng), zoom_start=6)
+def mapa_composiciones(composiciones):
+    mapa = folium.Map((39.8000, -2.9019), zoom_start=6)
+    mc = MarkerCluster()
+    
+    for composicion in composiciones:    
+        location = [composicion.lat, composicion.lng]
+        html =  '<h6><b>COMPOSICIÓN : </b>' + str(composicion.codigo)+ '<h6>' +\
+                '<br><b>' + str(composicion.descripcion) + '</b>' +\
+                '<br><b> Operador: </b>' + str(composicion.operador)  
+        popup = folium.Popup(html = html, max_width=200)
+        marker = folium.Marker(location = location, popup = popup, icon = folium.Icon(color="purple", icon = 'c'))
+        mc.add_child(marker)
+    mapa.add_child(mc)    
+
+    return mapa._repr_html_()
+
+def mapa_composicion(composicion, circulaciones):
+    mapa_int = folium.Map((composicion.lat, composicion.lng), zoom_start=6)
     # Pop up eje
-    location = [eje.lat, eje.lng]
-    html =  '<h5><b>EJE número: </b></h5>' + str(eje.codigo) +\
-            '<br><b>Versión: </b>' + str(eje.version) +\
-            '<br><b>Fabricante: </b>' + str(eje.fabricante) +\
-            '<br><b>Num. Cambios: </b>' + str(eje.num_cambios) +\
-            '<br><b>Kilómetros: </b>' + str(eje.km)
+    location = [composicion.lat, composicion.lng]
+    html =  '<h6><b>COMPOSICIÓN : </b>' + str(composicion.codigo)+ '<h6>' +\
+            '<br><b>' + str(composicion.descripcion) + '</b>' +\
+            '<br><b> Operador: </b>' + str(composicion.operador)  
     popup = folium.Popup(html = html, max_width=150)
     marker = folium.Marker(location = location, popup = popup, icon = folium.Icon(color="red"))
     mapa_int.add_child(marker) 
-    # Posiciones
 
+    # Posiciones
     for circulacion in circulaciones:    
         location = [circulacion.pinicio.puntored.lat, circulacion.pinicio.puntored.lng]
-        color = 'blue'
+        color = 'pink'
         popup = str(circulacion.pinicio.puntored.descripcion) + ' - ' + str(circulacion.dia)
         folium.CircleMarker(
             location = location,
@@ -87,7 +130,7 @@ def mapa_eje(eje, circulaciones):
         ).add_to(mapa_int)
 
     return mapa_int._repr_html_()
-
+    
 def mapa_cambios(cambios):
     mapa = folium.Map((39.8000, -2.9019), zoom_start=5)
     mc = MarkerCluster()

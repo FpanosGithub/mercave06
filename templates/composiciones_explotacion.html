@@ -1,0 +1,27 @@
+{% extends '_base_explotacion.html' %}
+{% block cuerpo %}
+<div class="container-fluid d-lg-flex d-xxl-flex flex-row align-items-lg-start justify-content-xxl-start align-items-xxl-start">
+<div class="col-lg-3 offset-lg-0">
+    <table class="table">
+        <thead class="table-dark">
+            <th>Lista de Composiciones:</th>
+        </thead>
+        <table class="table">
+        <tbody>
+            <tr class="table-secondary"><td>Cod</td><td>Operador</td></tr>
+            {% for composicion in composiciones %}
+            <tr class="table-light">
+                <td><a href = "{{ composicion.get_absolute_url }}"> {{ composicion.codigo }}</a></td>
+                <td>{{ composicion.operador }}</td>
+            </tr>
+            {% endfor %}
+         </tbody>
+    </table>
+</div>
+<div class="col-lg-9">
+    {% autoescape off %}
+    {{ mapa }}
+    {% endautoescape %}
+</div>
+</div>
+{% endblock cuerpo %}

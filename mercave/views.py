@@ -1,7 +1,7 @@
 from django.contrib.auth.decorators import login_required
 from django.shortcuts import render
-from .models import Fabricante, Mantenedor, Keeper, Operador, Eje, Cambiador, Cambio, CirculacionEje, AlarmaCambio, AlarmaCirculacion
-from .gis import mapa_ejes, mapa_cambiadores, mapa_cambiador, mapa_eje, mapa_cambios, plotear_alarma_circulacion, plotear_cambios
+from .models import Fabricante, Mantenedor, Keeper, Operador, Composicion, Vagon, Bogie, Eje, Cambiador, Cambio, CirculacionEje, CirculacionComposicion, AlarmaCambio, AlarmaCirculacion
+from .gis import mapa_ejes, mapa_cambiadores, mapa_composiciones, mapa_cambiador, mapa_eje, mapa_cambios, mapa_composicion, plotear_alarma_circulacion, plotear_cambios
 
 # Create your views here.
 #@login_required
@@ -33,6 +33,16 @@ def VistaCambiadores(request):
                     'fabricantes':fabricantes, 
                     'mantenedores':mantenedores, 
                     'cambiadores':cambiadores})
+
+#@login_required
+def VistaComposiciones(request):
+    composiciones = Composicion.objects.all()
+    mapa = mapa_composiciones(composiciones)
+
+    return render(request, 'composiciones_explotacion.html', context={
+                    'mapa':mapa, 
+                    'composiciones':composiciones, 
+                    })
 
 #@login_required
 def VistaEje(request, pk):
@@ -72,3 +82,17 @@ def VistaCambiador(request, pk):
                     'grc':grc, 
                     'gre':gre, 
                     'mapa':mapa})
+
+#@login_required
+def VistaComposicion(request, pk):
+    composicion_ficha = Composicion.objects.get(pk=pk)
+    circulaciones = CirculacionComposicion.objects.filter(composicion=composicion_ficha)[:5]
+    vagones = Vagon.objects.filter(composicion=composicion_ficha)
+    
+    mapa_situacion_composicion = mapa_composicion(composicion_ficha, circulaciones)
+    
+    return render(request, 'ficha_composicion.html', context={
+                    'composicion':composicion_ficha, 
+                    'circulaciones':circulaciones,
+                    'vagones': vagones,
+                    'mapa':mapa_situacion_composicion})
