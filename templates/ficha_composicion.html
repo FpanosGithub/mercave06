@@ -19,16 +19,35 @@
             <tr><td>Descripción: {{ vagon.descripcion }}</td></tr>
         </table>  
         {% endfor %}
+        <h5>Lista Ejes:</h5>
+        <table class="table">
+        <thead class="table-light"><td>Eje</td><td>Versión</td><td>Alrms</td></thead>
+        <tbody>
+            <tr class="table-secondary"></tr>
+            {% for eje in ejes %}
+            <tr class="table-light">
+            <td><a href = "{{ eje.get_absolute_url }}"> {{ eje.codigo }}</a></td>
+            <td>{{ eje.version }}</td>
+            <td>{{ eje.alarmas }}</td>
+            </tr>
+            {% endfor %}
+        </tbody>
+        </table>
     </div>
     <div class="col-lg-8 offset-lg-0">
+        <div class="row"><h6>Posiciones de la composición: {{ composicion.codigo }} en los últimos 4 días:</h6></div>
+        <div class="row">
+            {% autoescape off %}
+            {{ mapa }}
+            {% endautoescape %}
+        </div>
         <div class="row align-items-start">
-            <div class="col">
-                <h5>Circulaciones:</h5>
-                <table class="table">
-                <thead class="table-light">
-                    <th>Fecha</th><th>Inicio</th><th>Fin</th><th>km</th>
-                </thead>
-                <tbody>
+            <h5>Circulaciones:</h5>
+            <table class="table">
+            <thead class="table-light">
+                <th>Fecha</th><th>Inicio</th><th>Fin</th><th>km</th>
+            </thead>
+            <tbody>
                 {% for circulacion in circulaciones %}
                 <tr> 
                     <td>{{ circulacion.dia }}</td>
@@ -37,34 +56,7 @@
                     <td>{{ circulacion.km }}</td>
                 </tr>
                 {% endfor %}
-                </tbody>
-                </table>
-            </div>
-            <div class="col">
-                <div class="row"><h6>Posiciones de la composición: {{ composicion.codigo }} en los últimos 4 días:</h6></div>
-                <div class="row">
-                    {% autoescape off %}
-                    {{ mapa }}
-                    {% endautoescape %}
-                </div>
-            </div>
-        </div>
-        <div class="row">
-            <h5>Lista Ejes:</h5>
-                <table class="table">
-                <thead class="table-light"><td>Eje</td><td>Versión</td><td>Km</td><td>Camb</td><td>Alrms</td></thead>
-                <tbody>
-                    <tr class="table-secondary"></tr>
-                    {% for eje in ejes %}
-                    <tr class="table-light">
-                    <td><a href = "{{ eje.get_absolute_url }}"> {{ eje.codigo }}</a></td>
-                    <td>{{ eje.version }}</td>
-                    <td>{{ eje.km }}</td>
-                    <td>{{ eje.num_cambios }}</td>
-                    <td>{{ eje.alarmas_circulacion }}</td>
-                    </tr>
-                    {% endfor %}
-                 </tbody>
+            </tbody>
             </table>
         </div>
     </div>

@@ -12,7 +12,7 @@ def VistaEjes(request):
     operadores = Operador.objects.filter()
     ejes = Eje.objects.all()
     mapa = mapa_ejes(ejes)
-
+    
     return render(request, 'ejes_explotacion.html', context={
                     'mapa':mapa,
                     'fabricantes':fabricantes,
@@ -54,6 +54,7 @@ def VistaEje(request, pk):
     mapa_situacion_eje = mapa_eje(eje_ficha, circulaciones)
     mapa_cambios_eje = mapa_cambios(cambios)
     grd, grc, gre = plotear_cambios(cambios)
+    
 
     return render(request, 'ficha_eje.html', context=
                     {'eje':eje_ficha,
@@ -61,8 +62,6 @@ def VistaEje(request, pk):
                     'cambios':cambios, 
                     'circulaciones':circulaciones, 
                     'mapa_cambios':mapa_cambios_eje, 
-                    'alarmas_circulacion': alarmas_circulacion, 
-                    'alarmas_cambios': alarmas_cambios,
                     'grd':grd,
                     'grc':grc,
                     'gre':gre,
@@ -86,14 +85,19 @@ def VistaCambiador(request, pk):
 #@login_required
 def VistaComposicion(request, pk):
     composicion_ficha = Composicion.objects.get(pk=pk)
-    circulaciones = CirculacionComposicion.objects.filter(composicion=composicion_ficha)[:5]
+    circulaciones = CirculacionComposicion.objects.filter(composicion=composicion_ficha)[:6]
     vagones = Vagon.objects.filter(composicion=composicion_ficha)
-    
-    
+    ##
+    lista_vagones = []
+    for vagon in vagones:
+        lista_vagones.append(vagon.pk)
+    ##
+    ejes = Eje.objects.filter(vagon__pk__in=lista_vagones)
     mapa_situacion_composicion = mapa_composicion(composicion_ficha, circulaciones)
     
     return render(request, 'ficha_composicion.html', context={
                     'composicion':composicion_ficha, 
                     'circulaciones':circulaciones,
                     'vagones': vagones,
-                    'mapa':mapa_situacion_composicion})
+                    'ejes':ejes,
+                    'mapa':mapa_situacion_composicion},)

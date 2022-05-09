@@ -112,13 +112,13 @@ def mapa_composicion(composicion, circulaciones):
             '<br><b>' + str(composicion.descripcion) + '</b>' +\
             '<br><b> Operador: </b>' + str(composicion.operador)  
     popup = folium.Popup(html = html, max_width=150)
-    marker = folium.Marker(location = location, popup = popup, icon = folium.Icon(color="red"))
+    marker = folium.Marker(location = location, popup = popup, icon = folium.Icon(color="purple", icon = 'c'))
     mapa_int.add_child(marker) 
 
     # Posiciones
     for circulacion in circulaciones:    
         location = [circulacion.pinicio.puntored.lat, circulacion.pinicio.puntored.lng]
-        color = 'pink'
+        color = 'cadetblue'
         popup = str(circulacion.pinicio.puntored.descripcion) + ' - ' + str(circulacion.dia)
         folium.CircleMarker(
             location = location,
