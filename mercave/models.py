@@ -1,5 +1,6 @@
 from django.db import models
 from django.urls import reverse
+from pyparsing import null_debug_action
 
 # Create your models here.
 #!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
@@ -106,7 +107,7 @@ class VersionCambiador(models.Model):
                         ('METR-UIC', 'MÉTRICO(1000) <> UIC(1435)'),]
     anchos = models.CharField(max_length=12, choices = opciones_anchos, default = 'UIC-IB')
     diseñador = models.ForeignKey(Diseñador, on_delete=models.RESTRICT, limit_choices_to={'de_cambiadores': True},)
-    fabricante = models.ForeignKey(Fabricante, on_delete=models.RESTRICT, limit_choices_to={'de_cambiadores': True},)
+    fabricante = models.ForeignKey(Fabricante, on_delete=models.RESTRICT, limit_choices_to={'de_cambiadores': True}, null=True, blank=True)
     longitud_desencerrojado = models.FloatField(default=6000)   # mm
     longitud_cambio_rueda = models.FloatField(default=6000)     # mm
     longitud_encerrojado = models.FloatField(default=6000)      # mm
@@ -133,13 +134,17 @@ class VersionCambiador(models.Model):
 class Composicion(models.Model):
     codigo = models.CharField(max_length=16, unique= True)
     descripcion = models.CharField(max_length=100, default = ' ')
-    operador= models.ForeignKey(Operador, on_delete=models.CASCADE)
+    operador= models.ForeignKey(Operador, on_delete=models.CASCADE, null=True, blank=True)
     lng = models.FloatField(default=-3.9820) # grados
     lat = models.FloatField(default=40.2951) # grados
     def __str__(self):
         return self.codigo
     def get_absolute_url(self):
         return reverse("ficha_composicion", kwargs={'pk':self.pk})
+    def mover(self, localizacion):
+        self.lng = localizacion.lng
+        self.lat = localizacion.lat
+        self.save()
 
 class Vagon(models.Model):
     codigo = models.CharField(max_length=16, unique= True)
@@ -148,9 +153,9 @@ class Vagon(models.Model):
     num_bogies= models.IntegerField(default=2, null=True, blank=True)
     num_ejes = models.IntegerField(default=4, null=True, blank=True)
     foto = models.ImageField(upload_to='vagones/', blank = True)
-    operador= models.ForeignKey(Operador, on_delete=models.RESTRICT)
-    keeper= models.ForeignKey(Keeper, on_delete=models.RESTRICT)
-    mantenedor= models.ForeignKey(Mantenedor, on_delete=models.RESTRICT, limit_choices_to={'de_vagones': True},)
+    operador= models.ForeignKey(Operador, on_delete=models.RESTRICT, null=True, blank=True)
+    keeper= models.ForeignKey(Keeper, on_delete=models.RESTRICT, null=True, blank=True)
+    mantenedor= models.ForeignKey(Mantenedor, on_delete=models.RESTRICT, limit_choices_to={'de_vagones': True}, null=True, blank=True)
     composicion= models.ForeignKey(Composicion, on_delete=models.RESTRICT, null=True, blank=True)
     lng = models.FloatField(default=-3.9820) # grados
     lat = models.FloatField(default=40.2951) # grados
@@ -158,14 +163,24 @@ class Vagon(models.Model):
         return self.codigo
     def get_absolute_url(self):
         return reverse("ficha_vagon", kwargs={'pk':self.pk})
+    def mover(self, localizacion):
+        self.lng = localizacion.lng
+        self.lat = localizacion.lat
+        self.save()
+    def desacoplar_de_composicion(self):
+        self.composicion = None
+        self.save()
+    def acoplar_a_composicion(self, composicion):
+        self.composicion = composicion
+        self.save()
 
 class Bogie(models.Model):
     codigo = models.CharField(max_length=16, unique= True)
     tipo = models.CharField(max_length=20,default = ' ')
     foto = models.ImageField(upload_to='bogies/', blank = True)
-    operador= models.ForeignKey(Operador, on_delete=models.RESTRICT)
-    keeper= models.ForeignKey(Keeper, on_delete=models.RESTRICT)
-    mantenedor= models.ForeignKey(Mantenedor, on_delete=models.RESTRICT, limit_choices_to={'de_vagones': True},)
+    operador= models.ForeignKey(Operador, on_delete=models.RESTRICT, null=True, blank=True)
+    keeper= models.ForeignKey(Keeper, on_delete=models.RESTRICT, null=True, blank=True)
+    mantenedor= models.ForeignKey(Mantenedor, on_delete=models.RESTRICT, limit_choices_to={'de_bogies': True},)
     vagon= models.ForeignKey(Vagon, on_delete=models.RESTRICT, null=True, blank=True)
     lng = models.FloatField(default=-3.9820) # grados
     lat = models.FloatField(default=40.2951) # grados
@@ -173,6 +188,16 @@ class Bogie(models.Model):
         return self.codigo
     def get_absolute_url(self):
         return reverse("ficha_bogie", kwargs={'pk':self.pk})
+    def mover(self, localizacion):
+        self.lng = localizacion.lng
+        self.lat = localizacion.lat
+        self.save()
+    def desacoplar_de_vagon(self):
+        self.vagon = None
+        self.save()
+    def acoplar_a_vagon(self, vagon):
+        self.vagon = vagon
+        self.save()
 
 class Eje(models.Model):
     codigo = models.CharField(max_length=10, unique= True)
@@ -183,7 +208,7 @@ class Eje(models.Model):
     mantenedor = models.ForeignKey(Mantenedor, on_delete=models.RESTRICT)
     fecha_fab = models.DateField(auto_now_add=True)
     num_cambios = models.IntegerField(default=0)
-    km = models.FloatField(default=0)                       # km
+    km = models.FloatField(default=0)         # km
     mantenimiento = models.CharField(max_length=16)
     coef_trabajo = models.FloatField(default=0)
     bogie = models.ForeignKey(Bogie, on_delete=models.RESTRICT, null=True, blank=True)
@@ -195,6 +220,23 @@ class Eje(models.Model):
         return self.codigo
     def get_absolute_url(self):
         return reverse("ficha_eje", kwargs={'pk':self.pk})
+    def mover(self, localizacion):
+        self.lng = localizacion.lng
+        self.lat = localizacion.lat
+        self.save()
+    def desacoplar_de_bogie(self):
+        self.bogie = None
+        self.save()
+    def desacoplar_de_vagon(self):
+        self.vagon = None
+        self.save()
+    def acoplar_a_bogie(self, bogie):
+        self.bogie = bogie
+        self.save()
+    def acoplar_a_vagon(self, vagon):
+        self.vagon = vagon
+        self.save()
+
 
 class Cambiador(models.Model):
     codigo = models.CharField(max_length=16, unique= True)
