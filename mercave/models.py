@@ -142,8 +142,8 @@ class Composicion(models.Model):
     def get_absolute_url(self):
         return reverse("ficha_composicion", kwargs={'pk':self.pk})
     def mover(self, localizacion):
-        self.lng = localizacion.lng
-        self.lat = localizacion.lat
+        self.lng = localizacion['lng']
+        self.lat = localizacion['lat']
         self.save()
 
 class Vagon(models.Model):
@@ -163,9 +163,17 @@ class Vagon(models.Model):
         return self.codigo
     def get_absolute_url(self):
         return reverse("ficha_vagon", kwargs={'pk':self.pk})
-    def mover(self, localizacion):
-        self.lng = localizacion.lng
-        self.lat = localizacion.lat
+    # Funciones creadas para leer y guardar datos de las lógicas de negocio de logistica_feroviaria
+    def composicion_posicionada(self, posicion):
+        if self.composicion:
+            if (self.composicion.lng == posicion['lng'] and self.composicion.lat == posicion['lat']):
+                return True
+            else:
+                return False
+        return True
+    def mover(self, posicion):
+        self.lng = posicion['lng']
+        self.lat = posicion['lat']
         self.save()
     def desacoplar_de_composicion(self):
         self.composicion = None
@@ -189,8 +197,8 @@ class Bogie(models.Model):
     def get_absolute_url(self):
         return reverse("ficha_bogie", kwargs={'pk':self.pk})
     def mover(self, localizacion):
-        self.lng = localizacion.lng
-        self.lat = localizacion.lat
+        self.lng = localizacion['lng']
+        self.lat = localizacion['lat']
         self.save()
     def desacoplar_de_vagon(self):
         self.vagon = None
@@ -209,7 +217,7 @@ class Eje(models.Model):
     fecha_fab = models.DateField(auto_now_add=True)
     num_cambios = models.IntegerField(default=0)
     km = models.FloatField(default=0)         # km
-    mantenimiento = models.CharField(max_length=16)
+    mantenimiento = models.CharField(max_length=16, null=True, blank=True)
     coef_trabajo = models.FloatField(default=0)
     bogie = models.ForeignKey(Bogie, on_delete=models.RESTRICT, null=True, blank=True)
     vagon = models.ForeignKey(Vagon, on_delete=models.RESTRICT, null=True, blank=True)
@@ -221,8 +229,8 @@ class Eje(models.Model):
     def get_absolute_url(self):
         return reverse("ficha_eje", kwargs={'pk':self.pk})
     def mover(self, localizacion):
-        self.lng = localizacion.lng
-        self.lat = localizacion.lat
+        self.lng = localizacion['lng']
+        self.lat = localizacion['lat']
         self.save()
     def desacoplar_de_bogie(self):
         self.bogie = None
