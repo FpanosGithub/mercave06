@@ -30,7 +30,7 @@ def VistaEjes(request):
                     'operadores':operadores,
                     'ejes':ejes})
 
-#@login_required
+@login_required
 def VistaCambiadores(request):
     fabricantes = Fabricante.objects.filter(de_cambiadores = True)
     mantenedores = Mantenedor.objects.filter(de_cambiadores = True)
@@ -43,7 +43,7 @@ def VistaCambiadores(request):
                     'mantenedores':mantenedores, 
                     'cambiadores':cambiadores})
 
-#@login_required
+@login_required
 def VistaVagones(request):
     vagones = Vagon.objects.all()
     mapa = mapa_vagones(vagones)
@@ -52,7 +52,7 @@ def VistaVagones(request):
                     'mapa':mapa,
                     'vagones':vagones})
 
-#@login_required
+@login_required
 def VistaBogies(request):
     bogies = Bogie.objects.all()
     mapa = mapa_bogies(bogies)
@@ -62,7 +62,7 @@ def VistaBogies(request):
                     'bogies':bogies})
 
 
-#@login_required
+@login_required
 def VistaComposiciones(request):
     composiciones = Composicion.objects.all()
     mapa = mapa_composiciones(composiciones)
@@ -72,7 +72,7 @@ def VistaComposiciones(request):
                     'composiciones':composiciones, 
                     })
 
-#@login_required
+@login_required
 def VistaEje(request, pk):
     eje_ficha = Eje.objects.get(pk=pk)
     cambios = Cambio.objects.filter(eje=eje_ficha)
@@ -95,7 +95,7 @@ def VistaEje(request, pk):
                     'gre':gre,
                     })
 
-#@login_required
+@login_required
 def VistaCambiador(request, pk):
     cambiador_ficha = Cambiador.objects.get(pk=pk)
     cambios = Cambio.objects.filter(cambiador=cambiador_ficha)
@@ -110,7 +110,7 @@ def VistaCambiador(request, pk):
                     'gre':gre, 
                     'mapa':mapa})
 
-#@login_required
+@login_required
 def VistaVagon(request, pk):
     vagon_ficha = Vagon.objects.get(pk=pk)
     circulaciones = CirculacionVagon.objects.filter(vagon=vagon_ficha)[:6]
@@ -125,7 +125,7 @@ def VistaVagon(request, pk):
                     'ejes':ejes,
                     'mapa':mapa_situacion_vagon},)
 
-#@login_required
+@login_required
 def VistaBogie(request, pk):
     bogie_ficha = Bogie.objects.get(pk=pk)
     ejes = Eje.objects.filter(bogie = bogie_ficha)
@@ -137,7 +137,7 @@ def VistaBogie(request, pk):
                     'mapa':mapa_situacion_bogie},)
 
 
-#@login_required
+@login_required
 def VistaComposicion(request, pk):
     composicion_ficha = Composicion.objects.get(pk=pk)
     circulaciones = CirculacionComposicion.objects.filter(composicion=composicion_ficha)[:6]

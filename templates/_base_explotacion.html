@@ -98,10 +98,16 @@
                 <li><a class="dropdown-item" href="#">Cambiadores</a></li>
             </ul>
         </li> 
-        <li class = "nav-item">
-            <li><a class="nav-link" href="{% url 'account_logout' %}">{{ user.username }}</a></li>
-            <li><a class="nav-link" href="#">{{ user.organizacion }}</a></li>
+        {% if user.is_authenticated %}
+        <li class="nav-item dropdown">
+            <a class="nav-link dropdown-toggle" href="#" id="navbarScrollingDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">                
+                {{ user.username }}
+            </a>
+            <ul class="dropdown-menu" aria-labelledby="navbarScrollingDropdown">
+                <li><a class="dropdown-item" href="{% url 'account_logout' %}">salir</a></li> 
+            </ul>
         </li>
+        {% endif %}
         <form class="d-flex">
             <a class="nav-link" href="#">&nbsp&nbsp&nbsp&nbsp<img src="{% static '/images/adif_s.jpeg' %}">&nbsp&nbsp&nbsp&nbsp</a>
         </form>
