@@ -41,6 +41,7 @@ INSTALLED_APPS = [
     'django.contrib.messages',
     'whitenoise.runserver_nostatic',
     'django.contrib.staticfiles',
+    'django.contrib.sites',
     # Terceros
     'allauth',
     'allauth.account',
@@ -149,7 +150,8 @@ MEDIA_ROOT = str(BASE_DIR.joinpath('media'))
 # https://docs.djangoproject.com/en/4.0/ref/settings/#default-auto-field
 
 LOGIN_REDIRECT_URL = 'ejes/'
-LOGOUT_REDIRECT_URL = 'ejes/'
+#LOGOUT_REDIRECT_URL = 'ejes/'
+ACCOUNT_LOGOUT_REDIRECT = 'ejes/'
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 AUTH_USER_MODEL = 'accounts.Usuario'
 SITE_ID = 1

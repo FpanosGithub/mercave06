@@ -11,20 +11,21 @@ from .models import Composicion, Vagon, Bogie, Eje, CirculacionEje, CirculacionC
 #!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
 def Pruebas ():
     # Varios destinos para jugar
-    destino1 = {'lugar': 'León','lng': -5.5801,'lat': 42.5772,}
-    destino2 = {'lugar': 'Tarragona','lng': 1.2053,'lat': 41.0982,}
-    destino3 = {'lugar': 'Gabaldón','lng': -1.9472,'lat': 39.635,}
-    destino4 = {'lugar': 'Miranda','lng': -2.9395,'lat': 42.6919}
-    destino5 = {'lugar': 'Madrid','lng': -3.982,'lat': 40.2951,}
-    data_composicion_Adif = {'codigo':'Adif-0001', 'descripcion':'Tren de pruebas de Mercave', 'operador':'Adif'}
-    data_composicion_Renfe = {'codigo':'RENFE291', 'descripcion':'', 'operador':'Renfe'}
-    data_composicion_sncf = {'codigo':'Sncf-0001', 'descripcion':'allors enfants de la patrie', 'operador':'Sncf'}
-    lista_vagones = ['RENFE2345']
-    lista_bogies = ['RENFE1345', 'RENFE1348', 'ADIF001', 'ADIF002', 'ADIF003', 'ADIF004']
-    lista_ejes = ['TR0001','TR0002','TR0003','TR0004','TR0005','TR0006','TR0007','TR0008','TR0009','TR0010','TR0011','TR0012','TR0013','TR0014','TR0015','TR0016',]
+    # destino1 = {'lugar': 'León','lng': -5.5801,'lat': 42.5772,}
+    # destino2 = {'lugar': 'Tarragona','lng': 1.2053,'lat': 41.0982,}
+    # destino3 = {'lugar': 'Gabaldón','lng': -1.9472,'lat': 39.635,}
+    # destino4 = {'lugar': 'Miranda','lng': -2.9395,'lat': 42.6919}
+    # destino5 = {'lugar': 'Madrid','lng': -3.982,'lat': 40.2951,}
+    # data_composicion_Adif = {'codigo':'Adif-0001', 'descripcion':'Tren de pruebas de Mercave', 'operador':'Adif'}
+    # data_composicion_Renfe = {'codigo':'RENFE291', 'descripcion':'', 'operador':'Renfe'}
+    # data_composicion_sncf = {'codigo':'Sncf-0001', 'descripcion':'allors enfants de la patrie', 'operador':'Sncf'}
+    # lista_vagones = ['RENFE2345']
+    # lista_bogies = ['RENFE1345', 'RENFE1348', 'ADIF001', 'ADIF002', 'ADIF003', 'ADIF004']
+    # lista_ejes = ['TR0001','TR0002','TR0003','TR0004','TR0005','TR0006','TR0007','TR0008','TR0009','TR0010','TR0011','TR0012','TR0013','TR0014','TR0015','TR0016',]
     
     # Pruebas varias
-    formar_composicion(data_composicion_Renfe,destino3, lista_vagones)
+    # formar_composicion(data_composicion_Renfe,destino3, lista_vagones)
+    i=1
 
     
     

@@ -1,7 +1,7 @@
 from django.contrib.auth.decorators import login_required
 from django.shortcuts import render
 from .models import Fabricante, Mantenedor, Keeper, Operador, Composicion, Vagon, Bogie, Eje, Cambiador, Cambio, CirculacionEje, CirculacionComposicion, CirculacionVagon, AlarmaCambio, AlarmaCirculacion
-from .mapas import mapa_ejes, mapa_cambiadores, mapa_vagones, mapa_composiciones, mapa_cambiador, mapa_eje, mapa_cambios, mapa_vagon, mapa_composicion
+from .mapas import mapa_ejes, mapa_cambiadores, mapa_vagones, mapa_bogies, mapa_composiciones, mapa_cambiador, mapa_eje, mapa_cambios, mapa_vagon, mapa_composicion, mapa_bogie, mapa_posicionar
 from .graficas import  plotear_alarma_circulacion, plotear_cambios
 from .logistica_ferroviaria import Pruebas
 
@@ -13,7 +13,7 @@ def PruebasLogistica (request):
     return render(request, 'prueba.html')
 
 # Create your views here.
-#@login_required
+@login_required
 def VistaEjes(request):
     fabricantes = Fabricante.objects.filter(de_ejes = True)
     mantenedores = Mantenedor.objects.filter(de_ejes = True)
@@ -51,6 +51,16 @@ def VistaVagones(request):
     return render(request, 'vagones_explotacion.html', context={
                     'mapa':mapa,
                     'vagones':vagones})
+
+#@login_required
+def VistaBogies(request):
+    bogies = Bogie.objects.all()
+    mapa = mapa_bogies(bogies)
+    
+    return render(request, 'bogies_explotacion.html', context={
+                    'mapa':mapa,
+                    'bogies':bogies})
+
 
 #@login_required
 def VistaComposiciones(request):
@@ -116,6 +126,18 @@ def VistaVagon(request, pk):
                     'mapa':mapa_situacion_vagon},)
 
 #@login_required
+def VistaBogie(request, pk):
+    bogie_ficha = Bogie.objects.get(pk=pk)
+    ejes = Eje.objects.filter(bogie = bogie_ficha)
+    mapa_situacion_bogie = mapa_bogie(bogie_ficha)
+    
+    return render(request, 'ficha_bogie.html', context={
+                    'bogie':bogie_ficha, 
+                    'ejes':ejes,
+                    'mapa':mapa_situacion_bogie},)
+
+
+#@login_required
 def VistaComposicion(request, pk):
     composicion_ficha = Composicion.objects.get(pk=pk)
     circulaciones = CirculacionComposicion.objects.filter(composicion=composicion_ficha)[:6]
@@ -134,3 +156,8 @@ def VistaComposicion(request, pk):
                     'vagones': vagones,
                     'ejes':ejes,
                     'mapa':mapa_situacion_composicion},)
+
+#@login_required
+def VistaMapa(request):
+    mapa = mapa_posicionar()
+    return render(request, 'mapa_posicionar.html', context={'mapa':mapa,})

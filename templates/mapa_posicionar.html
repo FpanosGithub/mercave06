@@ -1,0 +1,8 @@
+{% extends '_base_explotacion.html' %}
+{% block cuerpo %}
+<div class="container-fluid d-lg-flex d-xxl-flex flex-row align-items-lg-start justify-content-xxl-start align-items-xxl-start">
+    {% autoescape off %}
+    {{ mapa }}
+    {% endautoescape %}
+</div>
+{% endblock cuerpo %}

@@ -22,10 +22,12 @@
                     Explotación
                 </a>
                 <ul class="dropdown-menu" aria-labelledby="navbarScrollingDropdown">
-                    <li><a class="dropdown-item" href="{% url 'ejes_expl' %}">Ejes</a></li>
-                    <li><a class="dropdown-item" href="{% url 'cambiadores_expl' %}">Cambiadores</a></li>
+                    <li><a class="dropdown-item" href="{% url 'ejes_expl' %}">Ejes</a></li> 
+                    <li><a class="dropdown-item" href="{% url 'bogies_expl' %}">Bogies</a></li>
                     <li><a class="dropdown-item" href="{% url 'vagones_expl' %}">Vagones</a></li>
                     <li><a class="dropdown-item" href="{% url 'composiciones_expl' %}">Composiciones</a></li>
+                    <li><hr class="dropdown-divider"></li>
+                    <li><a class="dropdown-item" href="{% url 'cambiadores_expl' %}">Cambiadores</a></li>
                 </ul>
             </li>
             <li class="nav-item dropdown">
@@ -41,11 +43,13 @@
                     <li><a class="dropdown-item" href="#">Keepers</a></li>
                     <li><a class="dropdown-item" href="#">Operadores</a></li>
                     <li><a class="dropdown-item" href="#">Certificadores</a></li>
+                    <li><hr class="dropdown-divider"></li>
                     <li><h6 class="dropdown-header">Autorizaciones</h6></li>
                     <li><hr class="dropdown-divider"></li>
                     <li><a class="dropdown-item" href="#">Ejes</a></li>
                     <li><a class="dropdown-item" href="#">Cambiadores</a></li> 
                     <li><a class="dropdown-item" href="#">Vagones</a></li>
+                    <li><hr class="dropdown-divider"></li>
                     <li><h6 class="dropdown-header">Certificaciones ETI</h6></li>
                     <li><hr class="dropdown-divider"></li>
                     <li><a class="dropdown-item" href="#">Versiones Ejes</a></li>
@@ -62,11 +66,13 @@
                     <li><a class="dropdown-item" href="#">Versiones de Ejes</a></li>
                     <li><a class="dropdown-item" href="#">Cambiadores</a></li>
                     <li><a class="dropdown-item" href="#">Bogies</a></li>
+                    <li><hr class="dropdown-divider"></li>
                     <li><h6 class="dropdown-header">Ensayos</h6></li>
                     <li><hr class="dropdown-divider"></li>
                     <li><a class="dropdown-item" href="#">Banco de Ejes</a></li>
                     <li><a class="dropdown-item" href="#">Banco de Fatiga</a></li> 
                     <li><a class="dropdown-item" href="#">Ensayos en Vía</a></li>
+                    <li><hr class="dropdown-divider"></li>
                     <li><h6 class="dropdown-header">Modelos IA</h6></li>
                     <li><hr class="dropdown-divider"></li>
                     <li><a class="dropdown-item" href="#">Cambio de Ancho</a></li>
@@ -93,12 +99,11 @@
             </ul>
         </li> 
         <li class = "nav-item">
-            <li><a class="nav-link" href="#">{{ user.username }}</a></li>
+            <li><a class="nav-link" href="{% url 'account_logout' %}">{{ user.username }}</a></li>
             <li><a class="nav-link" href="#">{{ user.organizacion }}</a></li>
         </li>
         <form class="d-flex">
             <a class="nav-link" href="#">&nbsp&nbsp&nbsp&nbsp<img src="{% static '/images/adif_s.jpeg' %}">&nbsp&nbsp&nbsp&nbsp</a>
-            <button class="btn btn-primary" type="button" href="{% url 'account_logout' %}">&nbsp&nbspSalir&nbsp&nbsp</button>
         </form>
       </div>
     </div>

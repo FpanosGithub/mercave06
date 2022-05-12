@@ -1,0 +1,27 @@
+{% extends '_base_explotacion.html' %}
+{% block cuerpo %}
+<div class="container-fluid d-lg-flex d-xxl-flex flex-row align-items-lg-start justify-content-xxl-start align-items-xxl-start">
+<div class="col-lg-3 offset-lg-0">
+    <table class="table">
+        <thead class="table-dark">
+            <th>Lista de Bogies:</th>
+        </thead>
+        <table class="table">
+        <tbody>
+            <tr class="table-secondary"><td>Bogie</td><td>Tipo</td><td>Operador</td></tr>
+            {% for bogie in bogies %}
+            <tr class="table-light">
+                <td><a href = "{{ bogie.get_absolute_url }}"> {{ bogie.codigo }}</a></td>
+                <td>{{ bogie.tipo }}</td>
+                <td>{{ bogie.operador }}</td>
+            </tr>
+            {% endfor %}
+         </tbody>
+    </table>
+</div>
+<div class="col-lg-9">
+    {% autoescape off %}
+    {{ mapa }}
+    {% endautoescape %}
+</div>
+{% endblock cuerpo %}
