@@ -275,9 +275,8 @@ class Linea(models.Model):
         return reverse("ficha_linea", kwargs={'pk':self.pk})
 
 class PuntoRed(models.Model):
-    codigo = models.CharField(max_length=16, unique= True)
     descripcion = models.CharField(max_length=100, null= True, blank = True)
-    linea = models.ForeignKey(Linea, on_delete=models.RESTRICT)
+    linea = models.ForeignKey(Linea, on_delete=models.RESTRICT, null= True, blank = True)
     pkilometrico = models.FloatField(null= True, blank = True)
     lng = models.FloatField(default=-3.9820)
     lat = models.FloatField(default=40.2951)

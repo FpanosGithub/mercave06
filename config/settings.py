@@ -45,9 +45,11 @@ INSTALLED_APPS = [
     # Terceros
     'allauth',
     'allauth.account',
+    'rest_framework',
     # Mercave
     'accounts',
     'mercave',
+    'api',
 ]
 
 MIDDLEWARE = [
@@ -123,11 +125,8 @@ AUTH_PASSWORD_VALIDATORS = [
 # https://docs.djangoproject.com/en/4.0/topics/i18n/
 
 LANGUAGE_CODE = 'en-us'
-
 TIME_ZONE = 'UTC'
-
 USE_I18N = True
-
 USE_TZ = True
 
 
@@ -145,10 +144,10 @@ STATICFILES_STORAGE = 'whitenoise.storage.CompressedManifestStaticFilesStorage'
 MEDIA_URL = "/media/"
 MEDIA_ROOT = str(BASE_DIR.joinpath('media'))
 
-
 # Default primary key field type
 # https://docs.djangoproject.com/en/4.0/ref/settings/#default-auto-field
 
+# allauth settings
 LOGIN_REDIRECT_URL = 'ejes/'
 #LOGOUT_REDIRECT_URL = 'ejes/'
 ACCOUNT_LOGOUT_REDIRECT = 'ejes/'
@@ -161,3 +160,8 @@ AUTHENTICATION_BACKENDS = (
             )
 EMAIL_BACKEND = 'django.core.mail.backends.console.EmailBackend'
 ACCOUNT_SESSION_REMEMBER = True
+
+# REST framework settings
+REST_FRAMEWORK = {
+            'DEFAULT_PERMISSION_CLASSES': ['rest_framework.permissions.AllowAny',],
+}
