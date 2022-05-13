@@ -275,6 +275,7 @@ class Linea(models.Model):
         return reverse("ficha_linea", kwargs={'pk':self.pk})
 
 class PuntoRed(models.Model):
+    codigo = models.CharField(max_length=16, unique= True)
     descripcion = models.CharField(max_length=100, null= True, blank = True)
     linea = models.ForeignKey(Linea, on_delete=models.RESTRICT, null= True, blank = True)
     pkilometrico = models.FloatField(null= True, blank = True)
@@ -287,11 +288,12 @@ class PuntoRed(models.Model):
 class Inicio(models.Model):
     puntored = models.ForeignKey(PuntoRed, on_delete=models.CASCADE)
     def __str__(self):
-        return self.puntored.codigo
+        return (self.puntored.codigo)
+        
 class Final(models.Model):
     puntored = models.ForeignKey(PuntoRed, on_delete=models.CASCADE)
     def __str__(self):
-        return self.puntored.codigo
+        return (self.puntored.codigo)
 
 #!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
 # EVENTOS. Llegan desde API de mercave_accion (IoT, IA).
